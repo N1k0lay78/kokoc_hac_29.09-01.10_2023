@@ -19,21 +19,23 @@
         {{ form.hidden_tag() }}
 
         {{ form.email.label(class="log__label") }}<br>
-        {{ form.email(class="log_input-text") }}<br>
+        {{ form.email(class="log__input-text") }}<br>
         {% for error in form.email.errors %}
         <div class="alert alert-danger" role="alert">
             {{ error }}
         </div>
         {% endfor %}
 
-        <label class="log__label" for="">Логин</label>
-        <input name="asd" type="text" class="log__input-text">
-
-        <label class="log__label" for="">Пароль</label>
-        <input name="asd" type="password" class="log__input-text">
+        {{ form.password.label(class="log__label") }}<br>
+        {{ form.password(class="log__input-text") }}<br>
+        {% for error in form.password.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
 
         <div class="log__button-wrapper">
-            <button class="log__button" type="submit">войти</button>
+            {{ form.submit(type="submit", class="log__button") }}
         </div>
     </form>
 </div>

@@ -1,8 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request
+
+import config
 from data import db_session
+from data.forms import FormLogin, FormUserRegistration
 
 application = Flask(__name__)
-db_session.global_init("db/kokos.sqlite")
+# db_session.global_init("db/kokos.sqlite")
+application.config.from_object(config)
 
 
 def my_render(filename, **kwargs):
@@ -16,15 +20,38 @@ def my_render(filename, **kwargs):
         my_kwargs[key] = val
     return render_template(filename, **my_kwargs)
 
+
 @application.route("/")
 def main_page():
-    is_authorized = True
-    return my_render("base.html")
+    return my_render("base.html", title="Главная страница")
 
 
-@application.route("/login/")
+@application.route("/login/", methods=["GET", "POST"])
 def login_page():
-    return my_render("base.html", need_log=False)
+    form = FormLogin()
+    if request.method == "POST":
+        # TODO:
+        # session = db_session.create_session()
+        # user = session.query(User).filter(User.email == form.email.data).first()
+        # session.close()
+        # if user and user.check_password(form.password.data):
+        #     login_user(user, remember=True)
+        return redirect("/")
+    return my_render("login.html", title="Авторизация", need_log=False, form=form)
+
+
+@application.route("/registration/<string:code>", methods=["GET", "POST"])
+def registration(code):
+    form = FormUserRegistration()
+    message, result = None, False
+    # if request.method == 'POST':
+    #     message = create_personaldata(current_user.email,  {"data": form.data.data, "typedata": form.typedata.data})
+    #     if "success" in message:
+    #         result = True
+    #         set_special_params()
+    #         return redirect('/admin')
+    #     message = list(message.values())[-1]
+    return my_render('registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
 @application.route("/log/")
@@ -64,4 +91,4 @@ def ui3_page(id):
 
 
 if __name__ == '__main__':
-    application.run()
+    application.run("192.168.1.109")
