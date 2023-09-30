@@ -109,4 +109,13 @@ footer p {
   padding: 0 5px;
 }
 
+.chart {
+  padding: 10px;
+}
+.chart__wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 /*# sourceMappingURL=ui_kit.css.map */

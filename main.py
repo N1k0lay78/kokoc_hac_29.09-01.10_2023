@@ -14,10 +14,22 @@ def log_page():
 
 
 @application.route("/ui1/<int:coast>")
-def ui_page(coast):
+def ui1_page(coast):
     if coast == 2:
         coast = -1
-    return render_template("UI-kit.html", coast_motion=int(coast))
+    return render_template("UI-kit-coast.html", coast_motion=int(coast))
+
+
+@application.route("/ui1/<int:coast>")
+def ui2_page(coast):
+    if coast == 2:
+        coast = -1
+    return render_template("UI-kit-coast.html", coast_motion=int(coast))
+
+
+@application.route("/ui2/")
+def ui_page():
+    return render_template("UI-kit-chart.html")
 
 
 if __name__ == '__main__':

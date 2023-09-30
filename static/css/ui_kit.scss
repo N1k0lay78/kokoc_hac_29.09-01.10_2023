@@ -42,3 +42,16 @@ $bg-dark: #1A265A;
     padding: 0 $size1;
   }
 }
+
+.chart {
+  padding: $size2;
+  &__wrapper {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &__chart {
+
+  }
+}
