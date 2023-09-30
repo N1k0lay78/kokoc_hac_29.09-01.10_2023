@@ -118,4 +118,41 @@ footer p {
   margin: 0 auto;
 }
 
+.leaderboard {
+  padding: 40px 0;
+}
+.leaderboard__table {
+  margin: 0 auto;
+}
+.leaderboard__table tr th {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  padding: 5px 10px;
+}
+.leaderboard__table tr th:last-child, .leaderboard__table tr th:first-child {
+  font-family: "Onest", sans-serif;
+  padding: 5px 10px;
+}
+.leaderboard__body.self th {
+  padding-top: 20px !important;
+}
+.leaderboard__body th:first-child {
+  display: flex;
+  justify-content: space-around;
+}
+.leaderboard__body th:first-child img {
+  height: 24px;
+}
+.leaderboard__body th + th {
+  text-align: left;
+}
+.leaderboard__body th a {
+  color: black !important;
+}
+.leaderboard__caption {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+
 /*# sourceMappingURL=ui_kit.css.map */

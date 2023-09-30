@@ -23,8 +23,27 @@ def ui1_page(coast):
 
 
 @application.route("/ui2/")
-def ui_page():
+def ui2_page():
     return render_template("UI-kit-chart.html")
+
+
+@application.route("/ui3/<int:id>")
+def ui3_page(id):
+    leaderboard = [
+        ["Rjkzavr", 56262.36, 1],
+        ["Nikniksham", 56262.36, 2],
+        ["Niki", 56262.36, 3],
+        ["Juk", 56262.36, 4],
+        ["Rjkz", 56262.36, 5],
+        ["NikTV_78", 56262.36, 6],
+        ["bobr", 56262.36, 7],
+        ["kaiga", 56262.36, 8],
+        ["dragon", 56262.36, 9],
+        ["itv", 56262.36, 10],
+        ["Cha Cha", 56262.36, 11],
+        ["turtle", 56262.36, 12],
+    ]
+    return render_template("UI-kit-leaderboard.html", leaderboard=leaderboard, user_id=id)
 
 
 if __name__ == '__main__':
