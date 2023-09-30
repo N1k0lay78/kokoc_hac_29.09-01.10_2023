@@ -1,0 +1,57 @@
+@import "base";
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500&display=swap');
+
+$font-number: 'Onest', sans-serif;
+
+$bg-dark: #1A265A;
+
+.coast {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 $size3 0;
+  font-family: $font-number;
+
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-family: $font-title;
+    font-size: $font-size3;
+    padding: $size3 0 $size1 0;
+  }
+
+  &.positive {
+    color: $bg-green;
+  }
+
+  &.neutral {
+    color: $bg-dark;
+  }
+
+  &.negative {
+    color: $bg-red;
+  }
+
+  &__img {
+    height: 22px;
+  }
+
+  &__text {
+    font-size: $font-size2;
+    padding: 0 $size1;
+  }
+}
+
+.chart {
+  padding: $size2;
+  &__wrapper {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &__chart {
+
+  }
+}

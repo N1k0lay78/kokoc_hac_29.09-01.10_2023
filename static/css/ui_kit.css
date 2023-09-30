@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Onest:wght@400;500&display=swap");
 * {
   padding: 0;
   margin: 0;
@@ -76,66 +77,45 @@ footer p {
   font-size: 16px;
 }
 
-.log {
+.coast {
   width: 100%;
-  min-height: calc(100vh - 132px);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  padding: 0 0 20px 0;
+  font-family: "Onest", sans-serif;
 }
-.log__form {
-  max-width: 400px;
-  width: 100%;
-  padding: 20px 40px;
-}
-.log__title {
+.coast__title {
   width: 100%;
   text-align: center;
   font-family: "Oswald", sans-serif;
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  padding: 20px 0 5px 0;
 }
-.log__label {
-  font-size: 18px;
+.coast.positive {
+  color: #12b357;
 }
-.log__input-text {
-  width: 100%;
+.coast.neutral {
+  color: #1A265A;
+}
+.coast.negative {
+  color: #b34709;
+}
+.coast__img {
+  height: 22px;
+}
+.coast__text {
   font-size: 21px;
-  padding: 5px;
-  font-weight: 300;
-  background: transparent !important;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid black;
-  margin-bottom: 20px;
-}
-.log__button {
-  font-family: "Oswald", sans-serif;
-  font-size: 21px;
-  background: transparent;
-  outline: none;
-  border: 1px solid black;
-  padding: 0 10px 5px 10px;
-  margin: 10px 0 40px 0;
-}
-.log__button:hover {
-  cursor: pointer;
-  transform: scale(1.02);
-}
-.log__button a {
-  text-decoration: none;
-  outline: none;
-  border: none;
-  color: black !important;
-}
-.log__button-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-}
-.log__button-wrapper * + * {
-  margin-left: 20px;
+  padding: 0 5px;
 }
 
-/*# sourceMappingURL=loginout.css.map */
+.chart {
+  padding: 10px;
+}
+.chart__wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/*# sourceMappingURL=ui_kit.css.map */
