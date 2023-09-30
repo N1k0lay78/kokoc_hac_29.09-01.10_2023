@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/loginout.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container log">
+    <form class="log__form" action="POST">
+        <p class="log__title">ФОРМА</p>
+
+        <label class="log__label" for="">Логин</label>
+        <input name="asd" type="text" class="log__input-text">
+
+        <label class="log__label" for="">Пароль</label>
+        <input name="asd" type="password" class="log__input-text">
+
+        <div class="log__submit-wrapper">
+            <button class="log__submit" type="submit">отправить</button>
+        </div>
+
+        <a class="" href="/registration">Зарегистрироваться →</a>
+    </form>
+</div>
+{% endblock %}

@@ -4,18 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{title}}</title>
+    {% block style %}
     <link rel="stylesheet" href="/static/css/base.min.css">
+    {% endblock %}
 </head>
 <body>
-<header>
-    <h1>hello world!</h1>
-    <h2 color="#000">hello world!</h2>
+<header class="header">
+    <div class="header__wrapper">
+        <a class="header__link" href="/">
+            <img class="header__logo" src="/static/img/kokoc_logo.svg" alt="Логотип">
+        </a>
+        {% if True %}
+        {% if True %}
+        <a href="/login">
+            <div class="header__button">
+                <img src="/static/img/login.svg" alt="Логин">
+                <p>Войти</p>
+            </div>
+        </a>
+        {% else %}
+        <a href="/logout">
+            <div class="header__button">
+                <img src="/static/img/logout.svg" alt="Выйти">
+                <p>Выйти</p>
+            </div>
+        </a>
+        {% endif %}
+        {% endif %}
+    </div>
 </header>
 <main>
-
+    {% block main %}
+    {% endblock %}
 </main>
 <footer>
-
+    <p>powered by team <i>CodeBusters</i></p>
 </footer>
 </body>
 </html>

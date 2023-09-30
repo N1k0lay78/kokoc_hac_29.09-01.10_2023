@@ -1,0 +1,62 @@
+@import "base";
+
+.log {
+  width: 100%;
+  min-height: calc(100vh - 66px*2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__form {
+    max-width: 400px;
+    width: 100%;
+    padding: $size3 $size4;
+    @media (min-width: 425px) {
+      background: $bg-30;
+    }
+  }
+
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-family: $font-title;
+    font-size: $font-size4;
+    margin-bottom: $size3;
+  }
+
+  &__label {
+    font-size: $font-size1;
+  }
+
+  &__input-text {
+    width: 100%;
+    font-size: $font-size2;
+    padding: $size1;
+    font-weight: 300;
+    background: transparent !important;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+    margin-bottom: $size3;
+  }
+
+  &__submit {
+    font-family: $font-title;
+    font-size: $font-size2;
+    background: transparent;
+    outline: none;
+    border: 1px solid black;
+    padding: 0 $size2 $size1 $size2;
+    margin: $size2 0 $size4 0;
+
+    &-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  & a {
+    font-size: $font-size1;
+  }
+}

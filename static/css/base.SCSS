@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+$size1: 5px;
+$size2: 10px;
+$size3: 20px;
+$size4: 40px;
+$size5: 80px;
+$size6: 160px;
+
+$font-size1: 18px;
+$font-size2: 21px;
+$font-size3: 24px;
+$font-size4: 28px;
+$font-size5: 32px;
+
+$font-title: 'Oswald', sans-serif;
+$font-text: 'Roboto', sans-serif;
+
+$bg-60: #FEF6ED;
+$bg-30: #50A5B1;
+$bg-red: #F1600D;
+$bg-green: #18F276;
+$color-dark: #1A265A;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: $bg-60;
+  font-family: $font-text;
+  font-size: $font-size1;
+}
+
+.header {
+  width: 100%;
+  padding: $size3 0;
+  background: $color-dark;
+
+  &__wrapper {
+    padding: 0 $size3;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & img {
+    height: 26px;
+  }
+
+  &__logo {
+    margin-bottom: -10px;
+  }
+
+  & a {
+    text-decoration: none;
+    outline: none;
+    border: none;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    & p {
+      padding-left: $size1;
+      font-size: $font-size1;
+      font-weight: 400;
+      color: white !important;
+    }
+  }
+}
+
+.container {
+  padding: 0 $size2;
+
+  @media (min-width: 768px) {
+    padding: 0 $size3;
+  }
+
+  @media (min-width: 992px) {
+    padding: 0 $size6;
+  }
+}
+
+main {
+  min-height: calc(100vh - 66px);
+}
+
+footer {
+  padding: $size3 0;
+  background: #000;
+
+  & p {
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+  }
+}

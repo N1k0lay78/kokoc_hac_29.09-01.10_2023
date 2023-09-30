@@ -76,4 +76,60 @@ footer p {
   font-size: 16px;
 }
 
-/*# sourceMappingURL=base.css.map */
+.log {
+  width: 100%;
+  min-height: calc(100vh - 132px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.log__form {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px 40px;
+}
+@media (min-width: 425px) {
+  .log__form {
+    background: #50A5B1;
+  }
+}
+.log__title {
+  width: 100%;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.log__label {
+  font-size: 18px;
+}
+.log__input-text {
+  width: 100%;
+  font-size: 21px;
+  padding: 5px;
+  font-weight: 300;
+  background: transparent !important;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  margin-bottom: 20px;
+}
+.log__submit {
+  font-family: "Oswald", sans-serif;
+  font-size: 21px;
+  background: transparent;
+  outline: none;
+  border: 1px solid black;
+  padding: 0 10px 5px 10px;
+  margin: 10px 0 40px 0;
+}
+.log__submit-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.log a {
+  font-size: 18px;
+}
+
+/*# sourceMappingURL=loginout.css.map */
