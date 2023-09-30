@@ -14,4 +14,4 @@ def log_page():
 
 
 if __name__ == '__main__':
-    application.run("192.168.1.109")
+    application.run()
