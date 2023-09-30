@@ -14,8 +14,8 @@
         <a class="header__link" href="/">
             <img class="header__logo" src="/static/img/kokoc_logo.svg" alt="Логотип">
         </a>
-        {% if True %}
-        {% if True %}
+        {% if need_log %}
+        {% if not is_authorized %}
         <a href="/login">
             <div class="header__button">
                 <img src="/static/img/login.svg" alt="Логин">
@@ -23,12 +23,21 @@
             </div>
         </a>
         {% else %}
+        {% if is_logout %}
         <a href="/logout">
             <div class="header__button">
                 <img src="/static/img/logout.svg" alt="Выйти">
                 <p>Выйти</p>
             </div>
         </a>
+        {% else %}
+        <a href="/user/{{user_id}}">
+            <div class="header__button">
+                <img src="/static/img/user.svg" alt="профиль">
+                <p>Профиль</p>
+            </div>
+        </a>
+        {% endif %}
         {% endif %}
         {% endif %}
     </div>
