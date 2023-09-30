@@ -17,12 +17,10 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
     company = orm.relation('Company')
 
-    # company = orm.relation('Company')
-    # admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("admin.id"))
-    # admin = orm.relation('Admin')
+    statistics = orm.relation('Statistics')
 
     def __repr__(self):
-        return f'<User> Пользователь {self.id} {self.name} {self.email}'
+        return f'<User> Пользователь {self.id} {self.name} {self.email}, с уровнем {self.level}'
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

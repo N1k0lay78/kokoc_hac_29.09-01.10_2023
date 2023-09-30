@@ -15,9 +15,6 @@ class Company(SqlAlchemyBase, UserMixin, SerializerMixin):
     rates = sqlalchemy.Column(sqlalchemy.Float, unique=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Admin.id"))
-    admin = orm.relation('Admin')
-
     users = orm.relation('User')
     targets = orm.relation('Target')
 
