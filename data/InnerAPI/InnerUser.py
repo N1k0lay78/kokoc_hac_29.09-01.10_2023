@@ -9,7 +9,7 @@ from data import db_session
 def find_by_id(id, session):
     user = session.query(User).get(id)
     if not user:
-        return raise_error(f"Пользователь не найден не найдена", session)
+        return raise_error(f"Пользователь не найден", session)
     return user, session
 
 
@@ -19,18 +19,18 @@ def get_user(user_id):
     if type(user) is dict:
         session.close()
         return user
-    data = user.to_dict(only=("id", "name", 'email', 'unique_id', 'rates', 'logo'))
+    data = user.to_dict(only=("id", "name", 'email', 'level', 'contribution', 'company_id'))
     session.close()
     return data
 
 
-def get_user_by_name(name):
+def get_user_by_email(email):
     session = db_session.create_session()
-    user = session.query(User).filter(User.name == name).first()
+    user = session.query(User).filter(User.email == email).first()
     if not user:
         session.close()
-        return {"message": "Компания не найдена не найден"}
-    data = user.to_dict(only=("id", "name", 'email', 'unique_id', 'rates', 'logo'))
+        return {"message": "Пользователь не найден"}
+    data = user.to_dict(only=("id", "name", 'email', 'level', 'contribution', 'company_id'))
     session.close()
     return data
 
