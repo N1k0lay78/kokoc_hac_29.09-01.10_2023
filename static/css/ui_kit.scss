@@ -50,8 +50,50 @@ $bg-dark: #1A265A;
     width: 100%;
     margin: 0 auto;
   }
+}
 
-  &__chart {
+.leaderboard {
+  padding: $size4 0;
 
+  &__table {
+    margin: 0 auto;
+    & tr th {
+      font-family: $font-text;
+      font-weight: 500;
+      padding: $size1 $size2;
+    }
+    & tr th:last-child,
+    & tr th:first-child {
+      font-family: $font-number;
+      padding: $size1 $size2;
+    }
   }
+
+  &__body {
+    &.self th {
+      padding-top: $size3 !important;
+    }
+    & th:first-child {
+      display: flex;
+      justify-content: space-around;
+      & img {
+        height: 24px;
+      }
+    }
+    & th + th {
+      text-align: left;
+    }
+    & th a {
+      color: black !important;
+      &:hover {
+      }
+    }
+  }
+
+  &__caption {
+    font-family: $font-title;
+    font-size: $font-size3;
+    padding-bottom: $size2;
+  }
+
 }
