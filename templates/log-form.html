@@ -7,7 +7,7 @@
 {% block main %}
 <div class="container log">
     <form class="log__form" action="POST">
-        <p class="log__title">ФОРМА</p>
+        <p class="log__title">авторизация</p>
 
         <label class="log__label" for="">Логин</label>
         <input name="asd" type="text" class="log__input-text">
@@ -15,11 +15,9 @@
         <label class="log__label" for="">Пароль</label>
         <input name="asd" type="password" class="log__input-text">
 
-        <div class="log__submit-wrapper">
-            <button class="log__submit" type="submit">отправить</button>
+        <div class="log__button-wrapper">
+            <button class="log__button" type="submit">войти</button>
         </div>
-
-        <a class="" href="/registration">Зарегистрироваться →</a>
     </form>
 </div>
 {% endblock %}

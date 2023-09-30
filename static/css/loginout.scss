@@ -37,7 +37,7 @@
     margin-bottom: $size3;
   }
 
-  &__submit {
+  &__button {
     font-family: $font-title;
     font-size: $font-size2;
     background: transparent;
@@ -46,14 +46,27 @@
     padding: 0 $size2 $size1 $size2;
     margin: $size2 0 $size4 0;
 
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.02);
+    }
+
+    & a {
+      text-decoration: none;
+      outline: none;
+      border: none;
+      color: black !important;
+    }
+
     &-wrapper {
       width: 100%;
       display: flex;
       justify-content: center;
-    }
-  }
+      align-items: baseline;
 
-  & a {
-    font-size: $font-size1;
+      & * + * {
+        margin-left: $size3;
+      }
+    }
   }
 }

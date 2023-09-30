@@ -109,7 +109,7 @@ footer p {
   border-bottom: 1px solid black;
   margin-bottom: 20px;
 }
-.log__submit {
+.log__button {
   font-family: "Oswald", sans-serif;
   font-size: 21px;
   background: transparent;
@@ -118,13 +118,24 @@ footer p {
   padding: 0 10px 5px 10px;
   margin: 10px 0 40px 0;
 }
-.log__submit-wrapper {
+.log__button:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+.log__button a {
+  text-decoration: none;
+  outline: none;
+  border: none;
+  color: black !important;
+}
+.log__button-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: baseline;
 }
-.log a {
-  font-size: 18px;
+.log__button-wrapper * + * {
+  margin-left: 20px;
 }
 
 /*# sourceMappingURL=loginout.css.map */
