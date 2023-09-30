@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from data import db_session
 
 application = Flask(__name__)
-# db_session.global_init("db/kokos.sqlite")
+db_session.global_init("db/kokos.sqlite")
 
 
 @application.route("/")
@@ -47,4 +47,4 @@ def ui3_page(id):
 
 
 if __name__ == '__main__':
-    application.run("192.168.1.109")
+    application.run()
