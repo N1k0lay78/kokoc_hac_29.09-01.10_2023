@@ -9,13 +9,14 @@ class Activity(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'activity'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
-    coast = sqlalchemy.Column(sqlalchemy.String)        # Стоимость за 1 условную единицу упражнения
+    coast = sqlalchemy.Column(sqlalchemy.Integer)        # Стоимость за 1 условную единицу упражнения
+    conventional_unit = sqlalchemy.Column(sqlalchemy.String)        # Условная единица
     type = sqlalchemy.Column(sqlalchemy.String)         # Тип упражнения (какую группу мышц качает)
+    description = sqlalchemy.Column(sqlalchemy.String)         # Описание
+    image = sqlalchemy.Column(sqlalchemy.String, nullable=True)         # Картинка
+    base_count = sqlalchemy.Column(sqlalchemy.Integer)   # Базовое количество выполняемых условных единиц, кол-во необходимых равно level * base_count
 
     statistics = orm.relation('Statistics')
 
-    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Admin.id"))
-    admin = orm.relation('Admin')
-
     def __repr__(self):
-        return f'<Activity> Активность {self.name}'
+        return f'<Activity> Активность {self.name}, за {self.conventional_unit} платят {self.coast}'

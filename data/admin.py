@@ -13,9 +13,6 @@ class Admin(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    companies = orm.relation('Company')
-    activities = orm.relation('Activity')
-
     def __repr__(self):
         return f'<Admin> Админ {self.id} {self.name} {self.email}'
 
