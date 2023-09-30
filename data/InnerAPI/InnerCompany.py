@@ -30,7 +30,7 @@ def get_company_by_name(name):
     company = session.query(Company).filter(Company.name == name).first()
     if not company:
         session.close()
-        return {"message": "Компания не найдена не найден"}
+        return {"message": "Компания не найдена"}
     data = company.to_dict(only=("id", "name", 'email', 'unique_id', 'rates', 'logo'))
     session.close()
     return data
@@ -94,7 +94,7 @@ def delete_company(admin_email, company_id):
 
 
 def create_company(admin_email, args):
-    admin, session = check_params(admin_email, args, ["name", 'email', 'rates', 'logo'])
+    admin, session = check_params(admin_email, args, ["name", 'email', 'rates', 'logo', 'password'])
 
     if type(admin) is dict:
         return admin
@@ -110,6 +110,7 @@ def create_company(admin_email, args):
     new_company.unique_id = args['unique_id']
     new_company.rates = args['rates']
     new_company.logo = args['logo']
+    new_company.set_password(args['password'])
 
     session.add(new_company)
     session.commit()

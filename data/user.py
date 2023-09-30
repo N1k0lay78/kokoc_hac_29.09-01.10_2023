@@ -9,9 +9,9 @@ from data.db_session import SqlAlchemyBase
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'user'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     name = sqlalchemy.Column(sqlalchemy.String)
-    level = sqlalchemy.Column(sqlalchemy.String)            # Уровень подготовки
+    email = sqlalchemy.Column(sqlalchemy.String, unique=True)
+    level = sqlalchemy.Column(sqlalchemy.Integer)           # Уровень подготовки
     contribution = sqlalchemy.Column(sqlalchemy.Float)      # Вклад за всё время
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
