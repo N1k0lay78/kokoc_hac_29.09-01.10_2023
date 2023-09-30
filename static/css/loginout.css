@@ -88,11 +88,6 @@ footer p {
   width: 100%;
   padding: 20px 40px;
 }
-@media (min-width: 425px) {
-  .log__form {
-    background: #50A5B1;
-  }
-}
 .log__title {
   width: 100%;
   text-align: center;

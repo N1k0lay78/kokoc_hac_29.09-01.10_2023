@@ -19,9 +19,9 @@ $font-text: 'Roboto', sans-serif;
 
 $bg-60: #FEF6ED;
 $bg-30: #50A5B1;
-$bg-red: #F1600D;
-$bg-green: #18F276;
-$color-dark: #1A265A;
+$bg-red: #b34709;
+$bg-green: #12b357;
+$bg-dark: #1A265A;
 
 * {
   padding: 0;
@@ -38,7 +38,7 @@ body {
 .header {
   width: 100%;
   padding: $size3 0;
-  background: $color-dark;
+  background: $bg-dark;
 
   &__wrapper {
     padding: 0 $size3;
