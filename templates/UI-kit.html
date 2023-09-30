@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/ui_kit.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <p class="coast__title">Kokoc благотворительность</p>
+    {% if coast_motion == 1 %}
+    <div class="coast positive">
+        <img class="coast__img" src="/static/img/up.svg" alt="вверх">
+        <p class="coast__text">71 298,35 ₽ <span>+6,5%</span></p>
+    </div>
+    {% elif coast_motion == 0 %}
+    <div class="coast neutral">
+        <img class="coast__img" src="/static/img/refresh.svg" alt="эквивалентно">
+        <p class="coast__text">71 298,35 ₽ <span>+2,1%</span></p>
+    </div>
+    {% elif coast_motion == -1 %}
+    <div class="coast negative">
+        <img class="coast__img" src="/static/img/down.svg" alt="вниз">
+        <p class="coast__text">71 298,35 ₽ <span>-7,9%</span></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
