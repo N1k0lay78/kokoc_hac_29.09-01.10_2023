@@ -11,9 +11,6 @@
     max-width: 400px;
     width: 100%;
     padding: $size3 $size4;
-    @media (min-width: 425px) {
-      background: $bg-30;
-    }
   }
 
   &__title {
