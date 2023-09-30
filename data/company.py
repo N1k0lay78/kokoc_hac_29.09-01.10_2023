@@ -12,7 +12,8 @@ class Company(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     unique_id = sqlalchemy.Column(sqlalchemy.String, unique=True)
-    rates = sqlalchemy.Column(sqlalchemy.Float, unique=True)
+    rates = sqlalchemy.Column(sqlalchemy.Float)
+    logo = sqlalchemy.Column(sqlalchemy.String)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
     users = orm.relation('User')
