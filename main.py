@@ -1,11 +1,10 @@
 import jsonpickle as jsonpickle
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, login_user, current_user
-from sqlalchemy import JSON
-
 import config
 from data import db_session
 from data.InnerAPI.InnerCompany import create_company
+from data.InnerAPI.InnerTarget import create_target, delete_target
 from data.InnerAPI.InnerUser import create_user
 from data.InnerAPI.InnerUser import get_activity_statistics
 from data.admin import Admin
@@ -92,7 +91,6 @@ def user_registration_page(code):  # /user/registration/5zbFscdWU7NUUSFBjzA9UlFn
             message = list(message.values())[-1]
         else:
             message = "Пароли не совпадают"
-        return redirect(f"/login")
     return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
@@ -190,7 +188,6 @@ def company_registration_page():
             message = list(message.values())[-1]
         else:
             message = "Пароли не совпадают"
-        return redirect(f"/login")
     return my_render('company-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
@@ -259,9 +256,13 @@ def company_edit():
 @application.route("/fond/create/", methods=["POST", "GET"])
 def company_create_fond():
     form = FormFondCreate()
-    # TODO:
-    # создание фонда
-    return my_render("fond-create.html", title="Создать фонд", form=form)
+    message, result = None, False
+    if request.method == 'POST':
+        message = create_target(current_user.email, {"name": form.name.data, "description": form.description.data, "required_amount": form.required_amount.data})
+        if "success" in message:
+            return redirect("/login")
+        message = list(message.values())[-1]
+    return my_render("fond-create.html", title="Создать фонд", form=form, message=message)
 
 
 @application.route("/fond/edit/<int:id>", methods=["POST", "GET"])
@@ -274,9 +275,12 @@ def company_edit_fond(id):
 @application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
 def company_delete_fond(id):
     form = FormFondDelete()
-    # TODO:
-    # удаление фонда
-    return my_render("fond-delete.html", title="Создать фонд", form=form)
+    if request.method == 'POST':
+        message = delete_target(current_user.email, id)
+        if "success" in message:
+            return redirect("/login")
+        message = list(message.values())[-1]
+    return my_render("fond-delete.html", title="Создать фонд", form=form, message=message)
 
 
 if __name__ == '__main__':

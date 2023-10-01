@@ -3,6 +3,7 @@ from data.activity import Activity
 from data.statistics import Statistics
 from data.InnerAPI.main_file import raise_error, check_user
 from sqlalchemy import and_
+import random
 
 
 def get_list_statistics(user_email):
@@ -60,8 +61,8 @@ def create_statistics(user_email, activity_id):
         return {"error": "активность не найдена"}
 
     new_statistics = Statistics()
-    new_statistics.history = ""
-    new_statistics.all = 0
+    new_statistics.history = "/".join([str(random.choice(list(range(50)))) for i in range(random.choice(list(range(1, 10))))])
+    new_statistics.all = sum([int(el2) for el2 in new_statistics.history.split("/")[-7:]])
     new_statistics.start_date = datetime.now()
     new_statistics.user_id = user.id
     new_statistics.activity_id = activity_id
