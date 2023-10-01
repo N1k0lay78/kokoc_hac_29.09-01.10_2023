@@ -10,7 +10,7 @@ from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
 from data.user import User
 
 application = Flask(__name__)
-# db_session.global_init("db/kokos.sqlite")
+db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
 login_manager = LoginManager()
 login_manager.init_app(application)
