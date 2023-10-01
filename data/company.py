@@ -7,7 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Company(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'company'
+    __tablename__ = 'Company'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)

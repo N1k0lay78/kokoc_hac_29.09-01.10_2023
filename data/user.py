@@ -7,15 +7,16 @@ from data.db_session import SqlAlchemyBase
 
 
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     level = sqlalchemy.Column(sqlalchemy.Integer)           # Уровень подготовки
     contribution = sqlalchemy.Column(sqlalchemy.Float)      # Вклад за всё время
+    balance = sqlalchemy.Column(sqlalchemy.Float)           # Вклад за всё время
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
+    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Company.id"))
     company = orm.relation('Company')
 
     statistics = orm.relation('Statistics')

@@ -1,12 +1,33 @@
 from flask import Flask, render_template, redirect, request
+from flask_login import LoginManager, logout_user, login_required, login_user, current_user
 
 import config
 from data import db_session
+from data.InnerAPI.InnerCompany import create_company
+from data.admin import Admin
+from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
+from data.user import User
 
 application = Flask(__name__)
 # db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
+login_manager = LoginManager()
+login_manager.init_app(application)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    user = session.query(User).get(user_id)
+    if not user:
+        user = session.query(Company).get(user_id)
+        if not user:
+            user = session.query(Admin).get(user_id)
+            if not user:
+                logout_user()
+    session.close()
+    return user
 
 
 def my_render(filename, **kwargs):
@@ -28,16 +49,29 @@ def main_page():
 
 @application.route("/login/", methods=["GET", "POST"])
 def login_page():
+    if not current_user.is_anonymous:
+        return redirect("/")
     form = FormLogin()
     if request.method == "POST":
-        # TODO:
-        # session = db_session.create_session()
-        # user = session.query(User).filter(User.email == form.email.data).first()
-        # session.close()
-        # if user and user.check_password(form.password.data):
-        #     login_user(user, remember=True)
-        return redirect("/")
+        session = db_session.create_session()
+        person = session.query(User).filter(User.email == form.email.data).first()
+        if not person:
+            person = session.query(Company).filter(Company.email == form.email.data).first()
+            if not person:
+                person = session.query(Admin).filter(Admin.email == form.email.data).first()
+        session.close()
+        if person and person.check_password(form.password.data):
+            login_user(person, remember=True)
+            return redirect("/") # если успех
+        return redirect("/") # если неуспех
     return my_render("login.html", title="Авторизация", need_log=False, form=form)
+
+
+@application.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 @application.route("/user/registration/<string:code>/", methods=["GET", "POST"])
@@ -55,18 +89,19 @@ def user_registration_page(code):
     return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
-@application.route("/company/registration/<string:code>/", methods=["GET", "POST"])
-def company_registration_page(code):
+@application.route("/company/registration", methods=["GET", "POST"])
+def company_registration_page():
     form = FormCompanyRegistration()
     message, result = None, False
-    # if request.method == 'POST':
-    #     message = create_personaldata(current_user.email,  {"data": form.data.data, "typedata": form.typedata.data})
-    #     if "success" in message:
-    #         result = True
-    #         set_special_params()
-    #         return redirect('/admin')
-    #     message = list(message.values())[-1]
-    #     return redirect(f"/login")
+    if request.method == 'POST':
+        if form.password_1.data == form.password_2.data:
+            message = create_company({"name": form.name.data, "email": form.email.data, "rates": form.rates.data, "logo": "./static/img/kokoc_logo.png", "password": form.password_1.data})
+            if "success" in message:
+                return redirect("/login")
+            message = list(message.values())[-1]
+        else:
+            message = "Пароли не совпадают"
+        return redirect(f"/login")
     return my_render('company-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
