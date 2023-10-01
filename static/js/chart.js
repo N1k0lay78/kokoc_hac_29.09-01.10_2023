@@ -3,14 +3,14 @@ const load_chart = () => {
         method: 'GET',
     }).then((response) => response.json())
         .then((data) => {
-            console.log(data)
-            for (let i = 0; i < dt.data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 create_chart(data[i])
             }
         })
 }
 
 const create_chart = (data) => {
+    console.log(data)
     const chrs = document.getElementById('charts');
     let div1 = document.createElement("div")
     div1.classList.add("chart")
@@ -28,7 +28,7 @@ const create_chart = (data) => {
             labels: [1, 2, 3, 4, 5, 6, 7],
             datasets: [{
                 label: 'Ваш результат',
-                data: [7, 9, 6, 9, 6, 7, 9, 7],
+                data: data.data,
                 borderWidth: 2,
                 cubicInterpolationMode: 'monotone',
                 borderColor: '#1A265A',
@@ -37,7 +37,7 @@ const create_chart = (data) => {
                 tension: 0.4
             }, {
                 label: 'Средний в компании',
-                data: [8, 8, 8, 8, 8, 8, 8],
+                data: [data.avg_company, data.avg_company, data.avg_company, data.avg_company, data.avg_company, data.avg_company, data.avg_company],
                 borderWidth: 2,
                 cubicInterpolationMode: 'monotone',
                 borderColor: '#12b357',
@@ -46,7 +46,7 @@ const create_chart = (data) => {
                 tension: 0.4
             }, {
                 label: 'Ваш средний результат',
-                data: [7, 7, 7, 7, 7, 7, 7],
+                data: [data.avg_user, data.avg_user, data.avg_user, data.avg_user, data.avg_user, data.avg_user, data.avg_user],
                 borderWidth: 2,
                 cubicInterpolationMode: 'monotone',
                 borderColor: '#b34709',
@@ -63,7 +63,7 @@ const create_chart = (data) => {
                 },
                 title: {
                     display: true,
-                    text: 'Анжумания',
+                    text: data.title,
                     font: {
                         size: 18,
                     },
@@ -73,7 +73,7 @@ const create_chart = (data) => {
                 },
                 subtitle: {
                     display: true,
-                    text: 'Chart Subtitle',
+                    text: data.subtitle,
                     font: {
                         size: 16,
                     },

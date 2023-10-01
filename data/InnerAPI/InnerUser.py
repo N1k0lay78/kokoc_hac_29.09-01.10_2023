@@ -1,6 +1,7 @@
 from sqlalchemy import and_
 
 from data.InnerAPI.InnerTarget import find_target_by_id
+from data.activity import Activity
 from data.admin import Admin
 from data.company import Company
 from data.statistics import Statistics
@@ -168,11 +169,13 @@ def get_activity_statistics(user_email):
             for us in session.query(User).filter(User.company_id == user.company_id).all():
                 stat = session.query(Statistics).filter(and_(Statistics.activity_id == activity.activity_id, Statistics.user_id == us.id)).first()
                 if stat:
-                    dat.append(sum([int(el2) for el2 in stat.history.split("/")[-7:]]))
-            dat = sum(dat)
-            dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]])
+                    dat.append(sum([int(el2) for el2 in stat.history.split("/")[-7:]]) / 7)
+                    print(dat)
+            dat = sum(dat) / len(dat)
+            dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]]) / 7
             dat3 = [int(el2) for el2 in activity.history.split("/")[-7:]]
             dat3.extend([0] * (7 - len(dat3) if len(dat3) < 7 else 0))
+            activity = session.query(Activity).filter(Activity.id == activity.activity_id).first()
             chart.append({
                 "title": activity.name,
                 "subtitle": activity.description,
@@ -180,7 +183,8 @@ def get_activity_statistics(user_email):
                 "avg_user": dat2,
                 "data": dat3
             })
-        except:
+        except Exception as e:
+            print("#ZGBLJHFC!", e)
             pass
     session.close()
     return chart
