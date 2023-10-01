@@ -1,0 +1,62 @@
+{% macro linear_chart(id) -%}
+<div class="chart">
+    <div class="chart__wrapper">
+        <canvas id="{{id}}" height="300"></canvas>
+    </div>
+</div>
+{%- endmacro %}
+
+
+{% macro leaderboard(title, users, user_id=-1, count=10) -%}
+<div class="leaderboard">
+    <table class="leaderboard__table">
+        <caption class="leaderboard__caption">{{ title }}</caption>
+        <tr class="leaderboard__header">
+            <th>Место</th>
+            <th>Имя</th>
+            <th>Сумма</th>
+        </tr>
+        {% for nick, coast, id in leaderboard %}
+        {% if (loop.index <= count or count == -1) %}
+        <tr class="leaderboard__body">
+            <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
+            <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
+            <th>{{ coast }} ₽</th>
+        </tr>
+        {% elif id == user_id %}
+        <!-- место работника в рейтинге -->
+        <tr class="leaderboard__body self">
+            <th>{{ loop.index }}</th>
+            <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
+            <th>{{ coast }} ₽</th>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+{%- endmacro %}
+
+
+{% macro coast(coast, increment, title) -%}
+<p class="coast__title">{{ title }}</p>
+{% if increment > 5 %}
+<div class="coast positive">
+    <img class="coast__img" src="/static/img/up.svg" alt="вверх">
+    <p class="coast__text">{{ coast }} ₽ <span>+{{ increment }}%</span></p>
+</div>
+{% elif increment < 5 %}
+<div class="coast negative">
+    <img class="coast__img" src="/static/img/down.svg" alt="вниз">
+    <p class="coast__text">{{ coast }} ₽ <span>{{ increment }}%</span></p>
+</div>
+{% else %}
+<div class="coast neutral">
+    <img class="coast__img" src="/static/img/refresh.svg" alt="эквивалентно">
+    {% if increment >= 0%}
+    <p class="coast__text">{{ coast }} ₽ <span>+{{increment}}%</span></p>
+    {% else %}
+    <p class="coast__text">{{ coast }} ₽ <span>{{increment}}%</span></p>
+    {% endif %}
+</div>
+{% endif %}
+{%- endmacro %}

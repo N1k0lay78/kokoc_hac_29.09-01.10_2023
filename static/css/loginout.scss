@@ -27,6 +27,7 @@
 
   &__input-text {
     width: 100%;
+    font-family: $font-text;
     font-size: $font-size2;
     padding: $size1;
     font-weight: 300;
@@ -35,6 +36,22 @@
     border: none;
     border-bottom: 1px solid black;
     margin-bottom: $size3;
+  }
+
+  &__input-file {
+    font-family: $font-text;
+    margin-bottom: $size3;
+  }
+
+  &__input-select {
+    font-family: $font-text;
+    margin-bottom: $size3;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+    border-radius: 0;
   }
 
   &__button {
