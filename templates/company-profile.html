@@ -15,9 +15,11 @@
             <button class="profile__button">
                 <a href="/company/fond/create">Создать фонд</a>
             </button>
+            <!--
             <button class="profile__button">
                 <a href="/company/edit/">Редактировать профиль компании</a>
             </button>
+            -->
         </div>
     </div>
 
@@ -29,11 +31,11 @@
                 <th>Цель</th>
                 <th>Удалить</th>
             </tr>
-            {% for nick, coast, id in leaderboard %}
+            {% for fond in fonds %}
             <tr class="leaderboard__body">
-                <th><a class="leaderboard__href" href="/fond/edit/{{id}}">{{ nick }}</a></th>
-                <th>{{ coast }} ₽</th>
-                <th><a class="leaderboard__href" href="/fond/delete/{{id}}">Удалить</a></th>
+                <th><a class="leaderboard__href" href="/user/fonds/">{{ fond.name }}</a></th>
+                <th>{{ fond.required_amount }} ₽ {{ fond.collected_amount / fond.required_amount * 100}}%</th>
+                <th><a class="leaderboard__href" href="/fond/delete/{{fond.id}}">Удалить</a></th>
             </tr>
             {% endfor %}
         </table>
@@ -48,12 +50,12 @@
                 <th>Сумма</th>
                 <th>Удалить</th>
             </tr>
-            {% for nick, coast, id in leaderboard %}
+            {% for user in users %}
             <tr class="leaderboard__body">
                 <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
-                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
-                <th>{{ coast }} ₽</th>
-                <th><a class="leaderboard__href" href="/delete/user/{{id}}">Удалить</a></th>
+                <th><a class="leaderboard__href" href="/user/profile/{{user.id}}">{{ user.name }}</a></th>
+                <th>{{ user.balance }} ₽</th>
+                <th><a class="leaderboard__href" href="/">Удалить</a></th>
             </tr>
             {% endfor %}
         </table>

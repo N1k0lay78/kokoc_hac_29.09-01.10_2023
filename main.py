@@ -124,7 +124,7 @@ def user_activity(email):
     print(email)
     return jsonpickle.encode(data)
 
-
+# TELEPORT
 @application.route("/user/profile/<int:id>/")
 def user_profil_page(id):
     sessia = db_session.create_session()
@@ -243,42 +243,25 @@ def company_page(id):
 
 
 @application.route("/company/profile/<int:id>/")
+# TELEPORT
 def company_profile_page(id):
-    leaderboard = [
-        ["Rjkzavr", 56262.36, 1],
-        ["Nikniksham", 56262.36, 2],
-        ["Niki", 56262.36, 3],
-        ["Juk", 56262.36, 4],
-        ["Rjkz", 56262.36, 5],
-        ["NikTV_78", 56262.36, 6],
-        ["bobr", 56262.36, 7],
-        ["kaiga", 56262.36, 8],
-        ["dragon", 56262.36, 9],
-        ["itv", 56262.36, 10],
-        ["Cha Cha", 56262.36, 11],
-        ["turtle", 56262.36, 12],
-    ]
+    sessia = db_session.create_session()
+    fonds = sessia.query(Target).filter(Target.company_id == id).all()
+    users = sessia.query(User).filter(User.company_id == id).order_by(-User.balance).all()
+    sessia.close()
 
-    fonds = [
-        ["Rjkzavr", 56262.36, 1],
-        ["Nikniksham", 56262.36, 2],
-        ["Niki", 56262.36, 3],
-        ["Juk", 56262.36, 4],
-        ["Rjkz", 56262.36, 5],
-        ["NikTV_78", 56262.36, 6],
-        ["bobr", 56262.36, 7],
-        ["kaiga", 56262.36, 8],
-        ["dragon", 56262.36, 9],
-        ["itv", 56262.36, 10],
-        ["Cha Cha", 56262.36, 11],
-        ["turtle", 56262.36, 12],
-    ]
     return my_render("company-profile.html", title="Профиль", is_logout=True, is_authorized=True,
-                     leaderboard=leaderboard, fonds=fonds)
+                     users=users, fonds=fonds)
 
 
 @application.route("/company/edit/", methods=["POST", "GET"])
 def company_edit():
+    # необязательно
+    return redirect("/company/profile/123")
+
+
+@application.route("/delte/user/<int:id>", methods=["POST", "GET"])
+def delete_user():
     # необязательно
     return redirect("/company/profile/123")
 
@@ -305,6 +288,7 @@ def company_edit_fond(id):
 @application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
 def company_delete_fond(id):
     form = FormFondDelete()
+    message = ""
     if request.method == 'POST':
         message = delete_target(current_user.email, id)
         if "success" in message:

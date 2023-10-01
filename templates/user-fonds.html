@@ -9,7 +9,7 @@
     {% for fond in fonds %}
     <p class="fond__title">{{ fond.name }}</p>
     <p class="fond__info">{{ fond.required_amount }} ₽ <span class="fonds">{{ fond.collected_amount / fond.required_amount * 100}}%</span> <a href="/fond/spend/{{fond.id}}">Пожертвовать</a></p>
-    <p class="fond__description">{{desc}}</p>
+    <p class="fond__description">{{fond.description}}</p>
     {% endfor %}
 </div>
 {% endblock %}
