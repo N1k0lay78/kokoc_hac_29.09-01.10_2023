@@ -160,6 +160,11 @@ def company_profile_page(id):
     return my_render("company-profile.html", title="Профиль", is_logout=True, is_authorized=True, leaderboard=leaderboard, fonds=fonds)
 
 
+@application.route("/company/edit/", methods=["POST", "GET"])
+def company_edit():
+    return redirect("/company/profile/123")
+
+
 @application.route("/fond/create/", methods=["POST", "GET"])
 def company_create_fond():
     return redirect("/company/profile/123")
@@ -167,16 +172,12 @@ def company_create_fond():
 
 @application.route("/fond/edit/<int:id>", methods=["POST", "GET"])
 def company_edit_fond():
+    # необязательно
     return redirect("/company/profile/123")
 
 
 @application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
 def company_delete_fond():
-    return redirect("/company/profile/123")
-
-
-@application.route("/company/edit/", methods=["POST", "GET"])
-def company_edit():
     return redirect("/company/profile/123")
 
 
