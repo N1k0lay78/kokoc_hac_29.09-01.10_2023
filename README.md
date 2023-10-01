@@ -1,5 +1,21 @@
 # Приложение для конвертации активности в пожертвования
 
+## как запустить
+
+`pip install -r requirements.txt`
+`python main.py`
+
+Профиль администратора компании:<br>
+mail: admin2@admin.com - компания<br>
+pass: admin123<br>
+Профиль пользователя:<br>
+mail: admin3@admin.com - компания<br>
+pass: admin123<br>
+mail: admin4@admin.com - компания<br>
+pass: admin123<br>
+mail: admin5@admin.com - компания<br>
+pass: admin123<br>
+
 ## Что оно делает
 
 Конвертирует физическую активность сотрудников компании в пожертвования на благотворительность.
