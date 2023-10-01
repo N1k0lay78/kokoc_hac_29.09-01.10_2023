@@ -1,10 +1,11 @@
 from sqlalchemy import and_
 
 from data.InnerAPI.InnerTarget import find_target_by_id
+from data.admin import Admin
 from data.company import Company
 from data.statistics import Statistics
 from data.user import User
-from data.InnerAPI.main_file import raise_error, check_params, check_user, check_company
+from data.InnerAPI.main_file import raise_error, check_params, check_user, check_company, check_email
 from data import db_session
 
 
@@ -56,12 +57,11 @@ def put_user(email, args):
                        list(args.keys())))
     for key in keys:
         if key == 'name':
-            if session.query(User).filter(User.name == args["name"]).first():
-                return raise_error("Это название уже занято", session)[0]
             user.name = args['name']
         if key == 'email':
-            if session.query(User).filter(User.email == args["email"]).first():
-                return raise_error("Эта почта уже занято", session)[0]
+            session = check_email(args["email"], session)
+            if type(session) is dict:
+                return session
             user.email = args['email']
         if key == 'level':
             user.level = args['level']
@@ -92,7 +92,7 @@ def delete_user(company_email, user_id):
 
 def create_user(company_unique_id, args):
     session = db_session.create_session()
-    company = session.query(Company).where(Company.unique_id == company_unique_id).first()
+    company = session.query(Company).filter(Company.unique_id == company_unique_id).first()
     if not company:
         return raise_error("Компания не найдена", session)
 
@@ -101,6 +101,10 @@ def create_user(company_unique_id, args):
     if type(company) is dict:
         return company
 
+    session = check_email(args["email"], session)
+    if type(session) is dict:
+        return session
+
     new_user = User()
     new_user.name = args["name"]
     new_user.email = args["email"]
@@ -108,8 +112,9 @@ def create_user(company_unique_id, args):
     new_user.contribution = 0
     new_user.balance = 0
     new_user.set_password(args['password'])
+    new_user.company_id = company.id
 
-    company.add(new_user)
+    session.add(new_user)
     session.commit()
     id = new_user.id
     session.close()
@@ -158,16 +163,24 @@ def get_activity_statistics(user_email):
 
     chart = []
     for activity in session.query(Statistics).filter(Statistics.user_id == user.id).all():
-        dat = sum([[int(el2) for el2 in elem.history.split("/")[-7:]] for elem in session.query(Statistics).filter(and_(Statistics.activity_id == activity.id, Statistics.user.company_id == user.company_id)).all()])
-        dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]])
-        dat3 = [int(el2) for el2 in activity.history.split("/")[-7:]]
-        dat3.extend([0] * (7 - len(dat3) if len(dat3) < 7 else 0))
-        chart.append({
-            "title": activity.name,
-            "subtitle": activity.description,
-            "avg_company": dat,
-            "avg_user": dat2,
-            "data": dat3
-        })
+        dat = [0]
+        try:
+            for us in session.query(User).filter(User.company_id == user.company_id).all():
+                stat = session.query(Statistics).filter(and_(Statistics.activity_id == activity.activity_id, Statistics.user_id == us.id)).first()
+                if stat:
+                    dat.append(sum([int(el2) for el2 in stat.history.split("/")[-7:]]))
+            dat = sum(dat)
+            dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]])
+            dat3 = [int(el2) for el2 in activity.history.split("/")[-7:]]
+            dat3.extend([0] * (7 - len(dat3) if len(dat3) < 7 else 0))
+            chart.append({
+                "title": activity.name,
+                "subtitle": activity.description,
+                "avg_company": dat,
+                "avg_user": dat2,
+                "data": dat3
+            })
+        except:
+            pass
     session.close()
     return chart

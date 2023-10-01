@@ -63,9 +63,10 @@ def create_statistics(user_email, activity_id):
     new_statistics.history = ""
     new_statistics.all = 0
     new_statistics.start_date = datetime.now()
+    new_statistics.user_id = user.id
+    new_statistics.activity_id = activity_id
 
-    user.add(new_statistics)
-    activity_id.add(new_statistics)
+    session.add(new_statistics)
     session.commit()
     session.close()
 

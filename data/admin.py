@@ -7,7 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Admin(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'Admin'
+    __tablename__ = 'admin'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)

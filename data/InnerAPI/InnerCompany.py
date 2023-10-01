@@ -3,7 +3,7 @@ from data.company import Company
 from data.statistics import Statistics
 from data.user import User
 from data.target import Target
-from data.InnerAPI.main_file import raise_error, check_params, check_company
+from data.InnerAPI.main_file import raise_error, check_params, check_company, check_email
 from data import db_session
 
 
@@ -59,8 +59,9 @@ def put_company(email, args):
                 return raise_error("Это название уже занято", session)[0]
             company.name = args['name']
         if key == 'email':
-            if session.query(Company).filter(Company.email == args["email"]).first():
-                return raise_error("Эта почта уже занято", session)[0]
+            session = check_email(args["email"], session)
+            if type(session) is dict:
+                return session
             company.email = args['email']
         if key == 'rates':
             company.rates = args['rates']
@@ -97,6 +98,10 @@ def create_company(args):
     session = db_session.create_session()
     if not all(key in args and args[key] is not None for key in ["name", 'email', 'rates', 'logo', 'password']):
         return raise_error(f"Отсутствуют важные параметры: {['name', 'email', 'rates', 'logo', 'password']}", session)
+
+    session = check_email(args["email"], session)
+    if type(session) is dict:
+        return session
 
     new_company = Company()
     new_company.name = args["name"]

@@ -54,3 +54,13 @@ def check_params(admin_email, args=None, params=None, status=0):
         if not all(key in args and args[key] is not None for key in params):
             return raise_error(f"Отсутствуют важные параметры: {params}")
     return check_admin_status(admin_email, status)
+
+
+def check_email(email, session):
+    if session.query(User).filter(User.email == email).first():
+        return raise_error("Эта почта уже занята", session)[0]
+    if session.query(User).filter(Company.email == email).first():
+        return raise_error("Эта почта уже занята", session)[0]
+    if session.query(User).filter(Admin.email == email).first():
+        return raise_error("Эта почта уже занята", session)[0]
+    return session

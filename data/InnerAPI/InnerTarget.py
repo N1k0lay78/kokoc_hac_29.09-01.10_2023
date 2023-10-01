@@ -95,8 +95,9 @@ def create_target(company_email, args):
     new_target.required_amount = args['required_amount']
     new_target.collected_amount = 0
     new_target.status = False
+    new_target.company_id = company.id
 
-    company.add(new_target)
+    session.add(new_target)
     session.commit()
     id = new_target.id
     session.close()

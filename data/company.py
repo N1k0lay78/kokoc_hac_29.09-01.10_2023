@@ -7,7 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Company(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'Company'
+    __tablename__ = 'company'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
@@ -16,7 +16,8 @@ class Company(SqlAlchemyBase, UserMixin, SerializerMixin):
     logo = sqlalchemy.Column(sqlalchemy.String)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    users = orm.relation('User')
+    user = orm.relationship('User', back_populates='company')
+    # user = orm.relation('User')
     targets = orm.relation('Target')
 
     def __repr__(self):

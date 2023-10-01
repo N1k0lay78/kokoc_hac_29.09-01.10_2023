@@ -4,6 +4,7 @@ from flask_login import LoginManager, logout_user, login_required, login_user, c
 import config
 from data import db_session
 from data.InnerAPI.InnerCompany import create_company
+from data.InnerAPI.InnerUser import create_user
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
@@ -76,17 +77,19 @@ def logout():
 
 
 @application.route("/user/registration/<string:code>/", methods=["GET", "POST"])
-def user_registration_page(code):
+def user_registration_page(code):  # /user/registration/5zbFscdWU7NUUSFBjzA9UlFnUaUTUHx8HK7ybNjk7dL7xHWzGmO4wqUgeaP8qnjU
     form = FormUserRegistration()
     message, result = None, False
-    # if request.method == 'POST':
-    #     message = create_personaldata(current_user.email,  {"data": form.data.data, "typedata": form.typedata.data})
-    #     if "success" in message:
-    #         result = True
-    #         set_special_params()
-    #         return redirect('/admin')
-    #     message = list(message.values())[-1]
-    #     return redirect(f"/login")
+    if request.method == 'POST':
+        if form.password_1.data == form.password_2.data:
+            message = create_user(code, {"name": form.name.data, "email": form.email.data, "level": form.level.data,
+                                         "password": form.password_1.data})
+            if "success" in message:
+                return redirect("/login")
+            message = list(message.values())[-1]
+        else:
+            message = "Пароли не совпадают"
+        return redirect(f"/login")
     return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 

@@ -7,7 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
@@ -16,8 +16,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     balance = sqlalchemy.Column(sqlalchemy.Float)           # Вклад за всё время
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Company.id"))
-    company = orm.relation('Company')
+    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
+    company = orm.relationship('Company', back_populates="user")
 
     statistics = orm.relation('Statistics')
 

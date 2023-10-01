@@ -116,7 +116,7 @@ def create_activity(admin_email, args):
         new_activity.image = "./static/img/base_activity.png"
     else:
         new_activity.image = args["image"]
-    admin.add(new_activity)
+    session.add(new_activity)
     session.commit()
     id = new_activity.id
     session.close()

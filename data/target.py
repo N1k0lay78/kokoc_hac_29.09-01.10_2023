@@ -6,7 +6,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Target(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'Target'
+    __tablename__ = 'target'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)                 # Название цели
     description = sqlalchemy.Column(sqlalchemy.String)          # Описание цели
@@ -14,7 +14,7 @@ class Target(SqlAlchemyBase, UserMixin, SerializerMixin):
     collected_amount = sqlalchemy.Column(sqlalchemy.Float)      # Собранная сумма
     status = sqlalchemy.Column(sqlalchemy.Boolean)              # Статус цели
 
-    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Company.id"))
+    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
     company = orm.relation('Company')
 
     def __repr__(self):
