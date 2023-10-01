@@ -6,11 +6,22 @@
 
 {% block main %}
 <div class="container">
-    <select class="type-work" onselect="onSelect">
+    <select id="select" name="asssa" class="type-work">
         {% for type in types %}
         <option>{{ type }}</option>
         {% endfor %}
     </select>
+    <div id="acts">
+        {% for act in acts%}
+        <div data-type="{{act.type}}" class="act">
+            <p class="act__name">{{act.name}}</p>
+            <p class="act__price">{{act.coast}} ₽ {{act.conventional_unit}}</p>
+            <p class="act__recommend">Базовое количество: {{act.base_count}}</p>
+            <p class="act__recommend">Для Вас: {{act.base_count * current_user.level}}</p>
+            <a href="/user/make_work/{{act.id}}" class="act__work">Выполнить упражнение</a>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 

@@ -133,7 +133,7 @@ def make_contribution(email, contribution, target_id):
         return target
 
     if user.balance < contribution:
-        return raise_error("У вас недостаточно денег на балансе", session)
+        return raise_error("У вас недостаточно денег на балансе", session)[0]
 
     if target.status:
         return raise_error("Эта цель уже достигнута", session)[0]

@@ -178,4 +178,8 @@ footer p {
   padding-bottom: 10px;
 }
 
+.none {
+  display: none !important;
+}
+
 /*# sourceMappingURL=ui_kit.css.map */

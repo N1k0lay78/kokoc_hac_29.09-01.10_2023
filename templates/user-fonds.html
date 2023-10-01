@@ -6,9 +6,9 @@
 
 {% block main %}
 <div class="container">
-    {% for id, name, desc, coast, fill, have in user_fonds %}
-    <p class="fond__title">{{ name }}</p>
-    <p class="fond__info">{{ coast }} ₽ <span class="fonds">{{ fill }}%</span> <a href="/fond/{% if have %}remove{%else%}add{%endif%}/{{id}}">{% if have %}Удалить{%else%}Добавить{%endif%}</a></p>
+    {% for fond in fonds %}
+    <p class="fond__title">{{ fond.name }}</p>
+    <p class="fond__info">{{ fond.required_amount }} ₽ <span class="fonds">{{ fond.collected_amount / fond.required_amount * 100}}%</span> <a href="/fond/spend/{{fond.id}}">Пожертвовать</a></p>
     <p class="fond__description">{{desc}}</p>
     {% endfor %}
 </div>

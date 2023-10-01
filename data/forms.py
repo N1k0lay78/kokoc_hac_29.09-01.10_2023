@@ -58,3 +58,14 @@ class FormFondRemove(FlaskForm):
 
 class FormFondDelete(FlaskForm):
     submit = SubmitField("Удалить")
+
+
+class FormMakeWork(FlaskForm):
+    count = FloatField("Количество", validators=[DataRequired()])
+    submit = SubmitField("Сохранить")
+
+
+class FormMakePay(FlaskForm):
+    count = FloatField("Сумма для пожертвования", validators=[DataRequired()])
+    submit = SubmitField("Отправить")
+

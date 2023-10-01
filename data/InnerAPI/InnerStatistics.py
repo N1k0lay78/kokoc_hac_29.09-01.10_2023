@@ -42,8 +42,10 @@ def put_statistics(user_email, activity_id, today_count):
         return raise_error("Как это вообще возможно? Активность не найдена", session)[0]
 
     statistics = session.query(Statistics).filter(and_(Statistics.user_id == user.id, Statistics.activity_id == activity_id))
-    statistics.all += today_count
-    statistics.history += f'/{today_count}'
+    statistics = statistics.first()
+    statistics.all += int(today_count)
+    statistics.history += f'/{int(today_count)}'
+    user.balance += activity.coast * int(today_count) * (1.15 if today_count > activity.base_count * user.level else 1)
     session.commit()
     session.close()
     return {"success": f"Статистика успешно изменена"}

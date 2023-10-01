@@ -7,14 +7,15 @@ from flask_login import LoginManager, logout_user, login_required, login_user, c
 import config
 from data import db_session
 from data.InnerAPI.InnerCompany import create_company
+from data.InnerAPI.InnerStatistics import put_statistics
 from data.InnerAPI.InnerTarget import create_target, delete_target
-from data.InnerAPI.InnerUser import create_user
+from data.InnerAPI.InnerUser import create_user, make_contribution
 from data.InnerAPI.InnerUser import get_activity_statistics
 from data.activity import Activity
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
-    FormFondDelete, FormFondAdd, FormFondRemove
+    FormFondDelete, FormFondAdd, FormFondRemove, FormMakeWork, FormMakePay
 from data.target import Target
 from data.user import User
 
@@ -130,35 +131,63 @@ def user_profil_page(id):
     fonds = sessia.query(Target).filter(Target.company_id == current_user.company_id).all()
     users = sessia.query(User).filter(User.company_id == current_user.company_id).order_by(-User.balance).all()
     user = sessia.query(User).get(id)
+    sessia.close()
     if not user:
         return redirect("/")
-    print(fonds)
-    sessia.close()
     return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=user.balance, users=users,
                      user_email=user.email, fonds=fonds, user=user)
 
 
 @application.route("/user/work/")
 def user_work():
+    if current_user.is_anonymous:
+        return redirect("/")
     session = db_session.create_session()
     acts = session.query(Activity).all()
     types = set()
     for act in acts:
         types.add(act.type)
     types = list(types)
-    return my_render("user-work.html", types=types, acts=acts)
+    return my_render("user-work.html", types=types, acts=acts, current_user=current_user)
+
+
+@application.route("/user/make_work/<int:id>", methods=["GET", "POST"])
+def user_make_work(id):
+    if current_user.is_anonymous:
+        return redirect("/")
+    form = FormMakeWork()
+    if request.method == 'POST':
+        put_statistics(current_user.email, id, form.count.data)
+        return redirect("/")
+    session = db_session.create_session()
+    acts = session.query(Activity).get(id)
+    session.close()
+    return my_render('user-make-work.html', title="Записать количество", form=form, name=acts.name)
 
 
 
 @application.route("/user/fonds/")
 def user_fonds():
-    # TODO:
-    user_fonds = [
-        [1, "Фонд №1", "Длинное описание фонда №1, очень длинное описание фонда, очеееень длинное", 56262.36, 42.54, True],
-        [2, "Фонд №2", "Длинное описание фонда №2, очень длинное описание фонда, очеееень длинное", 94262.36, 78.12,  True],
-        [3, "Фонд №3", "Длинное описание фонда №3, очень длинное описание фонда, очеееень длинное", 62262.36, 54.53,  False],
-    ]
-    return my_render("user-fonds.html", user_fonds=user_fonds)
+    sessia = db_session.create_session()
+    fonds = sessia.query(Target).filter(Target.company_id == current_user.company_id).all()
+    sessia.close()
+    return my_render("user-fonds.html", fonds=fonds)
+
+
+@application.route("/fond/spend/<int:id>", methods=["GET", "POST"])
+def fond_spend_page(id):
+    form = FormMakePay()
+    err = ""
+    if request.method == 'POST':
+        resp = make_contribution(current_user.email, form.count.data, id)
+        if "success" in resp:
+            return redirect("/")
+        else:
+            err = resp["message"]
+    sessia = db_session.create_session()
+    fond = sessia.query(Target).get(id)
+    sessia.close()
+    return my_render("fond-spend.html", form=form, name=fond.name, message=err, result=False)
 
 
 @application.route("/fond/add/<int:id>")

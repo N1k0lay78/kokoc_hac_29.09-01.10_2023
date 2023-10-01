@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/loginout.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container log">
+    <form class="log__form" action="" method="post" enctype=multipart/form-data>
+        <p class="log__title">Пожертвовать в фонд: {{name}}</p>
+
+
+        {{ form.hidden_tag() }}
+
+
+        {{ form.count.label(class="log__label") }}<br>
+        {{ form.count(class="log__input-text") }}<br>
+
+        {% if message %}
+        {% if result %}
+        <p class="message-success">{{message}}</p>
+        {% else %}
+        <p class="message-error">{{message}}</p>
+        {% endif %}
+        {% endif %}
+
+        <div class="log__button-wrapper">
+            {{ form.submit(type="submit", class="log__button") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

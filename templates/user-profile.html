@@ -2,10 +2,22 @@
 
 {% block style %}
 <link rel="stylesheet" href="/static/css/ui_kit.min.css">
+<link rel="stylesheet" href="/static/css/profile.min.css">
 {% endblock %}
 
 {% block main %}
 <div class="container">
+    <div class="profile">
+        <div class="profile__wrapper">
+            <button class="profile__button">
+                <a href="/user/work/">Создать упражнения</a>
+            </button>
+            <button class="profile__button">
+                <a href="/user/fonds/">Страница фондов</a>
+            </button>
+        </div>
+    </div>
+
     <p class="coast__title">Kokoc благотворительность</p>
     <div class="coast neutral">
         <p class="coast__text">{{ coast }} ₽ </p>
