@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request
 
 import config
 from data import db_session
-from data.forms import FormLogin, FormUserRegistration
+from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
 
 application = Flask(__name__)
 # db_session.global_init("db/kokos.sqlite")
@@ -40,8 +40,8 @@ def login_page():
     return my_render("login.html", title="Авторизация", need_log=False, form=form)
 
 
-@application.route("/registration/<string:code>", methods=["GET", "POST"])
-def registration(code):
+@application.route("/user/registration/<string:code>/", methods=["GET", "POST"])
+def user_registration_page(code):
     form = FormUserRegistration()
     message, result = None, False
     # if request.method == 'POST':
@@ -51,7 +51,23 @@ def registration(code):
     #         set_special_params()
     #         return redirect('/admin')
     #     message = list(message.values())[-1]
-    return my_render('registration.html', title="Регистрация", message=message, form=form, result=result)
+    #     return redirect(f"/login")
+    return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
+
+
+@application.route("/company/registration/<string:code>/", methods=["GET", "POST"])
+def company_registration_page(code):
+    form = FormCompanyRegistration()
+    message, result = None, False
+    # if request.method == 'POST':
+    #     message = create_personaldata(current_user.email,  {"data": form.data.data, "typedata": form.typedata.data})
+    #     if "success" in message:
+    #         result = True
+    #         set_special_params()
+    #         return redirect('/admin')
+    #     message = list(message.values())[-1]
+    #     return redirect(f"/login")
+    return my_render('company-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
 @application.route("/log/")
