@@ -3,8 +3,10 @@ from flask_login import LoginManager, logout_user, login_required, login_user, c
 
 import config
 from data import db_session
+from data.admin import Admin
+from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
-from data.person import Person
+from data.user import User
 
 application = Flask(__name__)
 db_session.global_init("db/kokos.sqlite")
@@ -16,7 +18,13 @@ login_manager.init_app(application)
 @login_manager.user_loader
 def load_user(user_id):
     session = db_session.create_session()
-    user = session.query(Person).get(user_id)
+    user = session.query(User).get(user_id)
+    if not user:
+        user = session.query(Company).get(user_id)
+        if not user:
+            user = session.query(Admin).get(user_id)
+            if not user:
+                logout_user()
     session.close()
     return user
 
@@ -45,7 +53,11 @@ def login_page():
     form = FormLogin()
     if request.method == "POST":
         session = db_session.create_session()
-        person = session.query(Person).filter(Person.email == form.email.data).first()
+        person = session.query(User).filter(User.email == form.email.data).first()
+        if not person:
+            person = session.query(Company).filter(Company.email == form.email.data).first()
+            if not person:
+                person = session.query(Admin).filter(Admin.email == form.email.data).first()
         session.close()
         if person and person.check_password(form.password.data):
             login_user(person, remember=True)

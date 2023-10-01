@@ -7,6 +7,7 @@ from data.db_session import SqlAlchemyBase
 
 class Statistics(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'Statistics'
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     start_date = sqlalchemy.Column(sqlalchemy.DateTime)  # Дата, когда начали вести отчёт по этой активности
     history = sqlalchemy.Column(sqlalchemy.String)      # Отчёт по кол-ву в день 10/42/0/0/0/0/12/42/15
     all = sqlalchemy.Column(sqlalchemy.Integer)         # Сколько сделали за всё время
