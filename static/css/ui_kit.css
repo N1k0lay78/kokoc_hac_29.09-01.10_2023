@@ -108,6 +108,9 @@ footer p {
   font-size: 21px;
   padding: 0 5px;
 }
+.coast__text span.fonds {
+  margin-left: 10px;
+}
 
 .chart {
   padding: 10px;

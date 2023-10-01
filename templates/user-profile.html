@@ -28,13 +28,18 @@
     </div>
     {% endif %}
 
-    {% for type in chart_types %}
-    <div class="chart">
-        <div class="chart__wrapper">
-            <canvas id="chart-{{ loop.index }}" data-type="{{type}}" height="300"></canvas>
-        </div>
+    <div id="charts">
+
     </div>
-    {% endfor %}
+
+    <div id="fonds">
+        {% for name, _, coast, fill in user_fonds %}
+        <p class="coast__title">{{ name }}</p>
+        <div class="coast neutral">
+            <p class="coast__text">{{ coast }} ₽ <span class="fonds">{{ fill }}%</span></p>
+        </div>
+        {% endfor %}
+    </div>
 
     <div class="leaderboard">
         <table class="leaderboard__table">
@@ -69,7 +74,7 @@
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const user_id = {{user_id}}
+    const user_email = "{{user_email}}"
 </script>
 <script src="/static/js/chart.js"></script>
 {% endblock %}
