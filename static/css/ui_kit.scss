@@ -5,12 +5,36 @@ $font-number: 'Onest', sans-serif;
 
 $bg-dark: #1A265A;
 
+.fond {
+  &__title {
+    font-family: $font-title;
+    font-size: $font-size3;
+    padding: $size3 0 $size1 0;
+  }
+  &__info {
+    font-size: $font-size2;
+    padding-bottom: $size1;
+    & span.fonds {
+      margin-left: $size2;
+    }
+    & a {
+      color: black !important;
+      &:hover {
+      }
+    }
+  }
+  &__text {
+    font-family: $font-text;
+    font-size: $font-size2;
+  }
+}
+
 .coast {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 0 $size3 0;
+  padding-bottom: $size3;
   font-family: $font-number;
 
   &__title {

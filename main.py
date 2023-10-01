@@ -9,7 +9,7 @@ from data.InnerAPI.InnerUser import get_activity_statistics
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
-    FormFondDelete
+    FormFondDelete, FormFondAdd
 from data.user import User
 
 application = Flask(__name__)
@@ -139,14 +139,31 @@ def user_profil_page(id):
         ["turtle", 56262.36, 12],
     ]
     user_fonds = [
-        ["Фонд №1", "Описание", 56262.36, 42.54],
-        ["Фонд №2", "Описание", 94262.36, 78.12],
-        ["Фонд №3", "Описание", 62262.36, 54.53],
+        [1, "Фонд №1", "Длинное описание фонда №1, очень длинное описание фонда, очеееень длинное", 56262.36, 42.54, True],
+        [2, "Фонд №2", "Длинное описание фонда №2, очень длинное описание фонда, очеееень длинное", 94262.36, 78.12,  True],
+        [3, "Фонд №3", "Длинное описание фонда №3, очень длинное описание фонда, очеееень длинное", 62262.36, 54.53,  False],
 
     ]
     return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=coast,
                      increment=delta, leaderboard=leaderboard, chart_types=chart_types,
                      user_email=("" if current_user.is_anonymous else current_user.email), user_fonds=user_fonds)
+
+
+@application.route("/user/fonds/")
+def user_fonds():
+    user_fonds = [
+        [1, "Фонд №1", "Длинное описание фонда №1, очень длинное описание фонда, очеееень длинное", 56262.36, 42.54, True],
+        [2, "Фонд №2", "Длинное описание фонда №2, очень длинное описание фонда, очеееень длинное", 94262.36, 78.12,  True],
+        [3, "Фонд №3", "Длинное описание фонда №3, очень длинное описание фонда, очеееень длинное", 62262.36, 54.53,  False],
+    ]
+    return my_render("user-fonds.html", user_fonds=user_fonds)
+
+
+@application.route("/fond/add/<int:id>")
+def fond_add(id):
+    form = FormFondAdd()
+    name = f"Фонд №{id}"
+    return my_render("user-fonds.html", name=name, form=form)
 
 
 @application.route("/company/registration", methods=["GET", "POST"])

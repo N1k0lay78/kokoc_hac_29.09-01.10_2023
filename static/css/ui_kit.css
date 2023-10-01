@@ -77,12 +77,32 @@ footer p {
   font-size: 16px;
 }
 
+.fond__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  padding: 20px 0 5px 0;
+}
+.fond__info {
+  font-size: 21px;
+  padding-bottom: 5px;
+}
+.fond__info span.fonds {
+  margin-left: 10px;
+}
+.fond__info a {
+  color: black !important;
+}
+.fond__text {
+  font-family: "Roboto", sans-serif;
+  font-size: 21px;
+}
+
 .coast {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 0 20px 0;
+  padding-bottom: 20px;
   font-family: "Onest", sans-serif;
 }
 .coast__title {

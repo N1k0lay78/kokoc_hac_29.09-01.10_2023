@@ -48,5 +48,13 @@ class FormFondEdit(FlaskForm):
     submit = SubmitField("Редактировать")
 
 
+class FormFondAdd(FlaskForm):
+    submit = SubmitField("Подключить")
+
+
+class FormFondRemove(FlaskForm):
+    submit = SubmitField("Отключить")
+
+
 class FormFondDelete(FlaskForm):
     submit = SubmitField("Удалить")
