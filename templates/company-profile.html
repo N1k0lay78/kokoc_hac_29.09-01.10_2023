@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/ui_kit.min.css">
+<link rel="stylesheet" href="/static/css/profile.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="profile">
+        <div class="profile__wrapper">
+            <button id="make-invite" data-unique="{{company_unique}}" class="profile__button">
+                Копировать ссылку на создание аккаунта
+            </button>
+            <button class="profile__button">
+                <a href="/company/fond/create">Создать фонд</a>
+            </button>
+            <button class="profile__button">
+                <a href="/company/edit/">Редактировать профиль компании</a>
+            </button>
+        </div>
+    </div>
+
+    <div class="leaderboard">
+        <table class="leaderboard__table">
+            <caption class="leaderboard__caption">Фонды компании</caption>
+            <tr class="leaderboard__header">
+                <th>Название</th>
+                <th>Цель</th>
+                <th>Удалить</th>
+            </tr>
+            {% for nick, coast, id in leaderboard %}
+            <tr class="leaderboard__body">
+                <th><a class="leaderboard__href" href="/fond/edit/{{id}}">{{ nick }}</a></th>
+                <th>{{ coast }} ₽</th>
+                <th><a class="leaderboard__href" href="/fond/delete/{{id}}">Удалить</a></th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="leaderboard">
+        <table class="leaderboard__table">
+            <caption class="leaderboard__caption">Работники компании</caption>
+            <tr class="leaderboard__header">
+                <th>Место</th>
+                <th>Имя</th>
+                <th>Сумма</th>
+                <th>Удалить</th>
+            </tr>
+            {% for nick, coast, id in leaderboard %}
+            <tr class="leaderboard__body">
+                <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
+                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
+                <th>{{ coast }} ₽</th>
+                <th><a class="leaderboard__href" href="/delete/user/{{id}}">Удалить</a></th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/generate-link.js"></script>
+{% endblock %}

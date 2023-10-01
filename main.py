@@ -5,7 +5,7 @@ from data import db_session
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
 
 application = Flask(__name__)
-db_session.global_init("db/kokos.sqlite")
+# db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
 
 
@@ -70,12 +70,87 @@ def company_registration_page(code):
     return my_render('company-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
+@application.route("/company/<string:name>/")
+def company_page(name):
+    leaderboard = [
+        ["Rjkzavr", 56262.36, 1],
+        ["Nikniksham", 56262.36, 2],
+        ["Niki", 56262.36, 3],
+        ["Juk", 56262.36, 4],
+        ["Rjkz", 56262.36, 5],
+        ["NikTV_78", 56262.36, 6],
+        ["bobr", 56262.36, 7],
+        ["kaiga", 56262.36, 8],
+        ["dragon", 56262.36, 9],
+        ["itv", 56262.36, 10],
+        ["Cha Cha", 56262.36, 11],
+        ["turtle", 56262.36, 12],
+    ]
+    # TODO:
+    # Сделать страницу компании (добавить иконку, название, фонды и графики)
+    return my_render("company.html", title="Страница компании", leaderboard=leaderboard)
+
+
+@application.route("/company/profile/<int:id>/")
+def company_profile_page(id):
+    leaderboard = [
+        ["Rjkzavr", 56262.36, 1],
+        ["Nikniksham", 56262.36, 2],
+        ["Niki", 56262.36, 3],
+        ["Juk", 56262.36, 4],
+        ["Rjkz", 56262.36, 5],
+        ["NikTV_78", 56262.36, 6],
+        ["bobr", 56262.36, 7],
+        ["kaiga", 56262.36, 8],
+        ["dragon", 56262.36, 9],
+        ["itv", 56262.36, 10],
+        ["Cha Cha", 56262.36, 11],
+        ["turtle", 56262.36, 12],
+    ]
+
+    fonds = [
+        ["Rjkzavr", 56262.36, 1],
+        ["Nikniksham", 56262.36, 2],
+        ["Niki", 56262.36, 3],
+        ["Juk", 56262.36, 4],
+        ["Rjkz", 56262.36, 5],
+        ["NikTV_78", 56262.36, 6],
+        ["bobr", 56262.36, 7],
+        ["kaiga", 56262.36, 8],
+        ["dragon", 56262.36, 9],
+        ["itv", 56262.36, 10],
+        ["Cha Cha", 56262.36, 11],
+        ["turtle", 56262.36, 12],
+    ]
+    return my_render("company-profile.html", title="Профиль", is_logout=True, is_authorized=True, leaderboard=leaderboard, fonds=fonds)
+
+
+@application.route("/fond/create/", methods=["POST", "GET"])
+def company_create_fond():
+    return redirect("/company/profile/123")
+
+
+@application.route("/fond/edit/<int:id>", methods=["POST", "GET"])
+def company_edit_fond():
+    return redirect("/company/profile/123")
+
+
+@application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
+def company_delete_fond():
+    return redirect("/company/profile/123")
+
+
+@application.route("/company/edit/", methods=["POST", "GET"])
+def company_edit():
+    return redirect("/company/profile/123")
+
+
 @application.route("/log/")
 def log_page():
     return my_render("log-form.html", need_log=False)
 
 
-@application.route("/ui1/<int:coast>")
+@application.route("/ui1/<int:coast>/")
 def ui1_page(coast):
     if coast == 2:
         coast = -1

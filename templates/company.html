@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% include 'macros.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/ui_kit.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="leaderboard">
+        <table class="leaderboard__table">
+            <caption class="leaderboard__caption">Лучшие работники компании</caption>
+            <tr class="leaderboard__header">
+                <th>Место</th>
+                <th>Имя</th>
+                <th>Сумма</th>
+            </tr>
+            {% for nick, coast, id in leaderboard %}
+            {% if (loop.index <= 10) %}
+            <tr class="leaderboard__body">
+                <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
+                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
+                <th>{{ coast }} ₽</th>
+            </tr>
+            {% elif id == user_id %}
+            <!-- место работника в рейтинге -->
+            <tr class="leaderboard__body self">
+                <th>{{ loop.index }}</th>
+                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
+                <th>{{ coast }} ₽</th>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
