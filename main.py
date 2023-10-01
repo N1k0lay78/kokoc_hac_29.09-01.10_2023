@@ -1,3 +1,4 @@
+import jsonpickle as jsonpickle
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, login_user, current_user
 from sqlalchemy import JSON
@@ -10,7 +11,7 @@ from data.InnerAPI.InnerUser import get_activity_statistics
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
-    FormFondDelete, FormFondAdd
+    FormFondDelete, FormFondAdd, FormFondRemove
 from data.user import User
 
 application = Flask(__name__)
@@ -98,7 +99,7 @@ def user_registration_page(code):  # /user/registration/5zbFscdWU7NUUSFBjzA9UlFn
 @application.route("/user/activity/<string:email>")
 def user_activity(email):
     data = get_activity_statistics(email)
-    return JSON(data)
+    return jsonpickle.encode(data)
 
 
 @application.route("/user/profile/<int:id>/")
@@ -166,7 +167,14 @@ def user_fonds():
 def fond_add(id):
     form = FormFondAdd()
     name = f"Фонд №{id}"
-    return my_render("user-fonds.html", name=name, form=form)
+    return my_render("fond-add.html", name=name, form=form)
+
+
+@application.route("/fond/remove/<int:id>")
+def fond_remove(id):
+    form = FormFondRemove()
+    name = f"Фонд №{id}"
+    return my_render("fond-remove.html", name=name, form=form)
 
 
 @application.route("/company/registration", methods=["GET", "POST"])

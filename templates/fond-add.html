@@ -8,9 +8,18 @@
 <div class="container log">
     <form class="log__form" action="" method="post" enctype=multipart/form-data>
         <p class="log__title">Подключить фонд: {{name}}</p>
+        {% if message %}
+        {% if result %}
+        <p class="message-success">{{message}}</p>
+        {% else %}
+        <p class="message-error">{{message}}</p>
+        {% endif %}
+        {% endif %}
+
+        {{ form.hidden_tag() }}
 
         <div class="log__button-wrapper">
-            <button class="log__button">Подключить</button>
+            {{ form.submit(type="submit", class="log__button") }}
         </div>
     </form>
 </div>
