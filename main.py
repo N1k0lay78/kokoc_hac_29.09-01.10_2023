@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from flask_login import LoginManager
+from flask_login import LoginManager, logout_user, login_required, login_user, current_user
 
 import config
 from data import db_session
@@ -40,16 +40,25 @@ def main_page():
 
 @application.route("/login/", methods=["GET", "POST"])
 def login_page():
+    if not current_user.is_anonymous:
+        return redirect("/")
     form = FormLogin()
     if request.method == "POST":
-        # TODO:
-        # session = db_session.create_session()
-        # user = session.query(User).filter(User.email == form.email.data).first()
-        # session.close()
-        # if user and user.check_password(form.password.data):
-        #     login_user(user, remember=True)
-        return redirect("/")
+        session = db_session.create_session()
+        person = session.query(Person).filter(Person.email == form.email.data).first()
+        session.close()
+        if person and person.check_password(form.password.data):
+            login_user(person, remember=True)
+            return redirect("/") # если успех
+        return redirect("/") # если неуспех
     return my_render("login.html", title="Авторизация", need_log=False, form=form)
+
+
+@application.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 @application.route("/user/registration/<string:code>/", methods=["GET", "POST"])
