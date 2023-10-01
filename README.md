@@ -2,12 +2,13 @@
 
 ## как запустить
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt`<br>
 `python main.py`
 
 Профиль администратора компании:<br>
 mail: admin2@admin.com - компания<br>
 pass: admin123<br>
+<br>
 Профиль пользователя:<br>
 mail: admin3@admin.com - компания<br>
 pass: admin123<br>

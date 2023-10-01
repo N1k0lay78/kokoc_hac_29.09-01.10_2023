@@ -128,8 +128,14 @@ def user_activity(email):
 @application.route("/user/profile/<int:id>/")
 def user_profil_page(id):
     sessia = db_session.create_session()
-    fonds = sessia.query(Target).filter(Target.company_id == current_user.company_id).all()
-    users = sessia.query(User).filter(User.company_id == current_user.company_id).order_by(-User.balance).all()
+    try:
+        fonds = sessia.query(Target).filter(Target.company_id == current_user.company_id).all()
+    except Exception:
+        fonds = sessia.query(Target).filter(Target.company_id == current_user.id).all()
+    try:
+        users = sessia.query(User).filter(User.company_id == current_user.company_id).all()
+    except Exception:
+        users = sessia.query(User).filter(User.company_id == current_user.id).all()
     user = sessia.query(User).get(id)
     sessia.close()
     if not user:
