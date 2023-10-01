@@ -45,7 +45,7 @@ def check_user(email_user, args=None, params=None):
         return raise_error(f"Пользователь {email_user} не найден", session)
     if params:
         if not all(key in args and args[key] is not None for key in params):
-            return raise_error(f"Отсутствуют важные параметры: {params}")
+            return raise_error(f"Отсутствуют важные параметры: {params}", session)
     return user, session
 
 

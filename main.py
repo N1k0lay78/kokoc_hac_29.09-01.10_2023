@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, login_user, current_user
+from sqlalchemy import JSON
 
 import config
 from data import db_session
 from data.InnerAPI.InnerCompany import create_company
+from data.InnerAPI.InnerUser import get_activity_statistics
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
@@ -90,6 +92,12 @@ def user_registration_page(code):
     return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
+@application.route("/user/activity/<string:email>")
+def user_activity(email):
+    data = get_activity_statistics(email)
+    return JSON(data)
+
+
 @application.route("/user/profile/<int:id>/")
 def user_profil_page(id):
     coast = 63_152.62  # in rub
@@ -130,8 +138,15 @@ def user_profil_page(id):
         ["Cha Cha", 56262.36, 11],
         ["turtle", 56262.36, 12],
     ]
+    user_fonds = [
+        ["Фонд №1", "Описание", 56262.36, 42.54],
+        ["Фонд №2", "Описание", 94262.36, 78.12],
+        ["Фонд №3", "Описание", 62262.36, 54.53],
+
+    ]
     return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=coast,
-                     increment=delta, leaderboard=leaderboard, chart_types=chart_types)
+                     increment=delta, leaderboard=leaderboard, chart_types=chart_types,
+                     user_email=("" if current_user.is_anonymous else current_user.email), user_fonds=user_fonds)
 
 
 @application.route("/company/registration", methods=["GET", "POST"])
