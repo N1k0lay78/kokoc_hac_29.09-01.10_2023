@@ -5,7 +5,7 @@ from data import db_session
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
 
 application = Flask(__name__)
-# db_session.global_init("db/kokos.sqlite")
+db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
 
 
@@ -107,4 +107,4 @@ def ui3_page(id):
 
 
 if __name__ == '__main__':
-    application.run("192.168.1.109")
+    application.run()
