@@ -55,7 +55,7 @@
                 <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
                 <th><a class="leaderboard__href" href="/user/profile/{{user.id}}">{{ user.name }}</a></th>
                 <th>{{ user.balance }} ₽</th>
-                <th><a class="leaderboard__href" href="/">Удалить</a></th>
+                <th><a class="leaderboard__href" href="/delete/user/{{user.id}}">Удалить</a></th>
             </tr>
             {% endfor %}
         </table>
