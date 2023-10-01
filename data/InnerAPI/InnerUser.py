@@ -1,3 +1,5 @@
+from sqlalchemy import and_
+
 from data.InnerAPI.InnerTarget import find_target_by_id
 from data.company import Company
 from data.statistics import Statistics
@@ -43,40 +45,6 @@ def get_list_user():
         data.append(elem)
     session.close()
     return data
-
-
-def make_contribution(email, contribution, target_id):
-    user, session = check_user(email)
-    if type(user) is dict:
-        return user
-
-    target, session = find_target_by_id(target_id, session)
-    if type(target) is dict:
-        return target
-
-    if user.balance < contribution:
-        return raise_error("У вас недостаточно денег на балансе", session)
-
-    if target.status:
-        return raise_error("Эта цель уже достигнута", session)[0]
-
-    need = target.required_amount - target.collected_amount
-    if contribution > need:
-        user.balance -= need
-        target.collected_amount = target.required_amount
-        target.status = True
-        name = target.name
-        session.commit()
-        session.close()
-        return {"success": f"Цель {name} достигнута!"}
-
-    user.balance -= contribution
-    target.collected_amount += contribution
-    name = target.name
-    need -= contribution
-    session.commit()
-    session.close()
-    return {"success", f"Цель {name} стала ближе, до конца осталось {contribution}"}
 
 
 def put_user(email, args):
@@ -147,3 +115,59 @@ def create_user(company_unique_id, args):
     session.close()
 
     return {'id': id, 'success': f'Успешно зарегистрирован'}
+
+
+def make_contribution(email, contribution, target_id):
+    user, session = check_user(email)
+    if type(user) is dict:
+        return user
+
+    target, session = find_target_by_id(target_id, session)
+    if type(target) is dict:
+        return target
+
+    if user.balance < contribution:
+        return raise_error("У вас недостаточно денег на балансе", session)
+
+    if target.status:
+        return raise_error("Эта цель уже достигнута", session)[0]
+
+    need = target.required_amount - target.collected_amount
+    if contribution > need:
+        user.balance -= need
+        target.collected_amount = target.required_amount
+        target.status = True
+        name = target.name
+        session.commit()
+        session.close()
+        return {"success": f"Цель {name} достигнута!"}
+
+    user.balance -= contribution
+    target.collected_amount += contribution
+    name = target.name
+    need -= contribution
+    session.commit()
+    session.close()
+    return {"success", f"Цель {name} стала ближе, до конца осталось {contribution}"}
+
+
+def get_activity_statistics(user_email):
+    user, session = check_user(user_email)
+    if type(user) is dict:
+        return user
+
+    chart = []
+    for activity in session.query(Statistics).filter(Statistics.user_id == user.id).all():
+        dat = sum([[int(el2) for el2 in elem.history.split("/")[-7:]] for elem in session.query(Statistics).filter(and_(Statistics.activity_id == activity.id, Statistics.user.company_id == user.company_id)).all()])
+        dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]])
+        dat3 = [int(el2) for el2 in activity.history.split("/")[-7:]]
+        dat3.extend([0] * (7 - len(dat3) if len(dat3) < 7 else 0))
+        chart.append({
+            "title": activity.name,
+            "subtitle": activity.description,
+            "avg_company": dat,
+            "avg_user": dat2,
+            "data": dat3
+        })
+    session.close()
+    return chart

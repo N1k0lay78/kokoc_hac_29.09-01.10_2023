@@ -34,9 +34,9 @@ def load_user(user_id):
 def my_render(filename, **kwargs):
     my_kwargs = {
         "need_log": True,
-        "is_authorized": False,  # need irl data
+        "is_authorized": not current_user.is_anonymous,
         "is_logout": False,
-        "user_id": -1,  # need irl data
+        "user_id": current_user.id if not current_user.is_anonymous else -1,
     }
     for key, val in kwargs.items():
         my_kwargs[key] = val
@@ -114,7 +114,7 @@ def user_profil_page(id):
             "avg_company": 10,
             "avg_user": 8,
             "data": [8,9,9,7,8,7,9]
-        }
+        }   
     ]
     leaderboard = [
         ["Rjkzavr", 56262.36, 1],
