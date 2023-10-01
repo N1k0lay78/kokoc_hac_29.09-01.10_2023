@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/ui_kit.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    {% for id, name, desc, coast, fill, have in user_fonds %}
+    <p class="fond__title">{{ name }}</p>
+    <p class="fond__info">{{ coast }} ₽ <span class="fonds">{{ fill }}%</span> <a href="/fond/{% if have %}remove{%else%}add{%endif%}/{{id}}">{% if have %}Удалить{%else%}Добавить{%endif%}</a></p>
+    <p class="fond__description">{{desc}}</p>
+    {% endfor %}
+</div>
+{% endblock %}

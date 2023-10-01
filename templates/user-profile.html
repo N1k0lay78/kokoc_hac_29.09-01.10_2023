@@ -33,11 +33,13 @@
     </div>
 
     <div id="fonds">
-        {% for name, _, coast, fill in user_fonds %}
+        {% for id, name, desc, coast, fill, have in user_fonds %}
+        {% if have %}
         <p class="coast__title">{{ name }}</p>
         <div class="coast neutral">
             <p class="coast__text">{{ coast }} ₽ <span class="fonds">{{ fill }}%</span></p>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 
@@ -67,7 +69,6 @@
             {% endfor %}
         </table>
     </div>
-
 </div>
 {% endblock %}
 
