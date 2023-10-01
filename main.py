@@ -62,8 +62,8 @@ def login_page():
         session.close()
         if person and person.check_password(form.password.data):
             login_user(person, remember=True)
-            return redirect("/") # если успех
-        return redirect("/") # если неуспех
+            return redirect("/")  # если успех
+        return redirect("/")  # если неуспех
     return my_render("login.html", title="Авторизация", need_log=False, form=form)
 
 
@@ -89,13 +89,58 @@ def user_registration_page(code):
     return my_render('user-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
+@application.route("/user/profile/<int:id>/")
+def user_profil_page(id):
+    coast = 63_152.62  # in rub
+    delta = 6.9  # %
+    chart_types = ["анжумания", "анжумания", "анжумания", ]
+    charts = [
+        {
+            "title": "анжумания",
+            "subtitle": "за 1 раз 1000 rub",
+            "avg_company": 10,
+            "avg_user": 8,
+            "data": [8,9,9,7,8,7,9]
+        }, {
+            "title": "анжумания",
+            "subtitle": "за 1 раз 1000 rub",
+            "avg_company": 10,
+            "avg_user": 8,
+            "data": [8,9,9,7,8,7,9]
+        }, {
+            "title": "анжумания",
+            "subtitle": "за 1 раз 1000 rub",
+            "avg_company": 10,
+            "avg_user": 8,
+            "data": [8,9,9,7,8,7,9]
+        }
+    ]
+    leaderboard = [
+        ["Rjkzavr", 56262.36, 1],
+        ["Nikniksham", 56262.36, 2],
+        ["Niki", 56262.36, 3],
+        ["Juk", 56262.36, 4],
+        ["Rjkz", 56262.36, 5],
+        ["NikTV_78", 56262.36, 6],
+        ["bobr", 56262.36, 7],
+        ["kaiga", 56262.36, 8],
+        ["dragon", 56262.36, 9],
+        ["itv", 56262.36, 10],
+        ["Cha Cha", 56262.36, 11],
+        ["turtle", 56262.36, 12],
+    ]
+    return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=coast,
+                     increment=delta, leaderboard=leaderboard, chart_types=chart_types)
+
+
 @application.route("/company/registration", methods=["GET", "POST"])
 def company_registration_page():
     form = FormCompanyRegistration()
     message, result = None, False
     if request.method == 'POST':
         if form.password_1.data == form.password_2.data:
-            message = create_company({"name": form.name.data, "email": form.email.data, "rates": form.rates.data, "logo": "./static/img/kokoc_logo.png", "password": form.password_1.data})
+            message = create_company({"name": form.name.data, "email": form.email.data, "rates": form.rates.data,
+                                      "logo": "./static/img/kokoc_logo.png", "password": form.password_1.data})
             if "success" in message:
                 return redirect("/login")
             message = list(message.values())[-1]
@@ -105,8 +150,8 @@ def company_registration_page():
     return my_render('company-registration.html', title="Регистрация", message=message, form=form, result=result)
 
 
-@application.route("/company/<string:name>/")
-def company_page(name):
+@application.route("/company/<int:id>/")
+def company_page(id):
     leaderboard = [
         ["Rjkzavr", 56262.36, 1],
         ["Nikniksham", 56262.36, 2],
@@ -157,7 +202,8 @@ def company_profile_page(id):
         ["Cha Cha", 56262.36, 11],
         ["turtle", 56262.36, 12],
     ]
-    return my_render("company-profile.html", title="Профиль", is_logout=True, is_authorized=True, leaderboard=leaderboard, fonds=fonds)
+    return my_render("company-profile.html", title="Профиль", is_logout=True, is_authorized=True,
+                     leaderboard=leaderboard, fonds=fonds)
 
 
 @application.route("/company/edit/", methods=["POST", "GET"])
@@ -179,42 +225,6 @@ def company_edit_fond():
 @application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
 def company_delete_fond():
     return redirect("/company/profile/123")
-
-
-@application.route("/log/")
-def log_page():
-    return my_render("log-form.html", need_log=False)
-
-
-@application.route("/ui1/<int:coast>/")
-def ui1_page(coast):
-    if coast == 2:
-        coast = -1
-    return my_render("UI-kit-coast.html", coast_motion=int(coast))
-
-
-@application.route("/ui2/")
-def ui2_page():
-    return my_render("UI-kit-chart.html")
-
-
-@application.route("/ui3/<int:id>")
-def ui3_page(id):
-    leaderboard = [
-        ["Rjkzavr", 56262.36, 1],
-        ["Nikniksham", 56262.36, 2],
-        ["Niki", 56262.36, 3],
-        ["Juk", 56262.36, 4],
-        ["Rjkz", 56262.36, 5],
-        ["NikTV_78", 56262.36, 6],
-        ["bobr", 56262.36, 7],
-        ["kaiga", 56262.36, 8],
-        ["dragon", 56262.36, 9],
-        ["itv", 56262.36, 10],
-        ["Cha Cha", 56262.36, 11],
-        ["turtle", 56262.36, 12],
-    ]
-    return my_render("UI-kit-leaderboard.html", leaderboard=leaderboard, user_id=id, need_log=True)
 
 
 if __name__ == '__main__':
