@@ -27,19 +27,25 @@ def check_admin(email_admin):
     return user, session
 
 
-def check_company(email_company):
+def check_company(email_company, args=None, params=None):
     session = db_session.create_session()
     company = session.query(Company).filter(Company.email == email_company).first()
     if not company:
         return raise_error(f"Компания {email_company} не найдена", session)
+    if params:
+        if not all(key in args and args[key] is not None for key in params):
+            return raise_error(f"Отсутствуют важные параметры: {params}")
     return company, session
 
 
-def check_user(email_user):
+def check_user(email_user, args=None, params=None):
     session = db_session.create_session()
     user = session.query(User).filter(User.email == email_user).first()
     if not user:
         return raise_error(f"Пользователь {email_user} не найден", session)
+    if params:
+        if not all(key in args and args[key] is not None for key in params):
+            return raise_error(f"Отсутствуют важные параметры: {params}")
     return user, session
 
 

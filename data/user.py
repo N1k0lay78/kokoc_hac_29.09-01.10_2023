@@ -13,6 +13,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     email = sqlalchemy.Column(sqlalchemy.String, unique=True)
     level = sqlalchemy.Column(sqlalchemy.Integer)           # Уровень подготовки
     contribution = sqlalchemy.Column(sqlalchemy.Float)      # Вклад за всё время
+    balance = sqlalchemy.Column(sqlalchemy.Float)           # Вклад за всё время
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
     company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
