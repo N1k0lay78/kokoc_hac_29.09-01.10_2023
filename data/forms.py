@@ -32,3 +32,21 @@ class FormCompanyRegistration(FlaskForm):
     password_2 = PasswordField("Повторите Пароль",
                                validators=[Length(8, 16, "Пароль от 8 до 16 символов"), DataRequired()])
     submit = SubmitField("Зарегистрироваться")
+
+
+class FormFondCreate(FlaskForm):
+    name = StringField("Название фонда", validators=[DataRequired()])
+    description = StringField("Описание", validators=[DataRequired()])
+    required_amount = FloatField("Требуемая сумма", validators=[DataRequired()])
+    submit = SubmitField("Создать")
+
+
+class FormFondEdit(FlaskForm):
+    name = StringField("Название фонда", validators=[DataRequired()])
+    description = StringField("Описание", validators=[DataRequired()])
+    required_amount = FloatField("Требуемая сумма", validators=[DataRequired()])
+    submit = SubmitField("Редактировать")
+
+
+class FormFondDelete(FlaskForm):
+    submit = SubmitField("Удалить")

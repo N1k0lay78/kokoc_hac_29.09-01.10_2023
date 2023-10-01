@@ -6,7 +6,8 @@ from data import db_session
 from data.InnerAPI.InnerCompany import create_company
 from data.admin import Admin
 from data.company import Company
-from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
+from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
+    FormFondDelete
 from data.user import User
 
 application = Flask(__name__)
@@ -208,23 +209,31 @@ def company_profile_page(id):
 
 @application.route("/company/edit/", methods=["POST", "GET"])
 def company_edit():
+    # необязательно
     return redirect("/company/profile/123")
 
 
 @application.route("/fond/create/", methods=["POST", "GET"])
 def company_create_fond():
-    return redirect("/company/profile/123")
+    form = FormFondCreate()
+    # TODO:
+    # создание фонда
+    return my_render("fond-create.html", title="Создать фонд", form=form)
 
 
 @application.route("/fond/edit/<int:id>", methods=["POST", "GET"])
-def company_edit_fond():
+def company_edit_fond(id):
+    form = FormFondEdit()
     # необязательно
-    return redirect("/company/profile/123")
+    return my_render("fond-create.html", title="Редактировать фонд", form=form)
 
 
 @application.route("/fond/delete/<int:id>", methods=["POST", "GET"])
-def company_delete_fond():
-    return redirect("/company/profile/123")
+def company_delete_fond(id):
+    form = FormFondDelete()
+    # TODO:
+    # удаление фонда
+    return my_render("fond-delete.html", title="Создать фонд", form=form)
 
 
 if __name__ == '__main__':
