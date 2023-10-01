@@ -1,31 +1,19 @@
 import sqlalchemy
-from flask_login import UserMixin
 from sqlalchemy import orm
-from sqlalchemy_serializer import SerializerMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-from data.db_session import SqlAlchemyBase
+from data.person import Person
 
 
-class User(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'user'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    name = sqlalchemy.Column(sqlalchemy.String)
-    email = sqlalchemy.Column(sqlalchemy.String, unique=True)
+class User(Person):
+    __tablename__ = 'User'
+    id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('Person.id'), primary_key=True)
     level = sqlalchemy.Column(sqlalchemy.Integer)           # Уровень подготовки
     contribution = sqlalchemy.Column(sqlalchemy.Float)      # Вклад за всё время
     balance = sqlalchemy.Column(sqlalchemy.Float)           # Вклад за всё время
-    hashed_password = sqlalchemy.Column(sqlalchemy.String)
 
-    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("company.id"))
+    company_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("Company.id"))
     company = orm.relation('Company')
 
     statistics = orm.relation('Statistics')
 
     def __repr__(self):
         return f'<User> Пользователь {self.id} {self.name} {self.email}, с уровнем {self.level}'
-
-    def set_password(self, password):
-        self.hashed_password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.hashed_password, password)

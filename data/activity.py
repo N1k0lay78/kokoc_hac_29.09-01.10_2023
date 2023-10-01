@@ -6,7 +6,7 @@ from data.db_session import SqlAlchemyBase
 
 
 class Activity(SqlAlchemyBase, UserMixin, SerializerMixin):
-    __tablename__ = 'activity'
+    __tablename__ = 'Activity'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, unique=True)
     coast = sqlalchemy.Column(sqlalchemy.Integer)        # Стоимость за 1 условную единицу упражнения

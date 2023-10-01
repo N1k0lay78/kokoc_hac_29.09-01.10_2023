@@ -1,12 +1,24 @@
 from flask import Flask, render_template, redirect, request
+from flask_login import LoginManager
 
 import config
 from data import db_session
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration
+from data.person import Person
 
 application = Flask(__name__)
 db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
+login_manager = LoginManager()
+login_manager.init_app(application)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    user = session.query(Person).get(user_id)
+    session.close()
+    return user
 
 
 def my_render(filename, **kwargs):
