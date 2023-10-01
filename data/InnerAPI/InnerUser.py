@@ -170,7 +170,6 @@ def get_activity_statistics(user_email):
                 stat = session.query(Statistics).filter(and_(Statistics.activity_id == activity.activity_id, Statistics.user_id == us.id)).first()
                 if stat:
                     dat.append(sum([int(el2) for el2 in stat.history.split("/")[-7:]]) / 7)
-                    print(dat)
             dat = sum(dat) / len(dat)
             dat2 = sum([int(el2) for el2 in activity.history.split("/")[-7:]]) / 7
             dat3 = [int(el2) for el2 in activity.history.split("/")[-7:]]
@@ -184,7 +183,6 @@ def get_activity_statistics(user_email):
                 "data": dat3
             })
         except Exception as e:
-            print("#ZGBLJHFC!", e)
             pass
     session.close()
     return chart

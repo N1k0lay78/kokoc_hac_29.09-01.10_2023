@@ -7,39 +7,20 @@
 {% block main %}
 <div class="container">
     <p class="coast__title">Kokoc благотворительность</p>
-    {% if increment > 5 %}
-    <div class="coast positive">
-        <img class="coast__img" src="/static/img/up.svg" alt="вверх">
-        <p class="coast__text">{{ coast }} ₽ <span>+{{ increment }}%</span></p>
-    </div>
-    {% elif increment < 5 %}
-    <div class="coast negative">
-        <img class="coast__img" src="/static/img/down.svg" alt="вниз">
-        <p class="coast__text">{{ coast }} ₽ <span>{{ increment }}%</span></p>
-    </div>
-    {% else %}
     <div class="coast neutral">
-        <img class="coast__img" src="/static/img/refresh.svg" alt="эквивалентно">
-        {% if increment >= 0%}
-        <p class="coast__text">{{ coast }} ₽ <span>+{{increment}}%</span></p>
-        {% else %}
-        <p class="coast__text">{{ coast }} ₽ <span>{{increment}}%</span></p>
-        {% endif %}
+        <p class="coast__text">{{ coast }} ₽ </p>
     </div>
-    {% endif %}
 
     <div id="charts">
 
     </div>
 
     <div id="fonds">
-        {% for id, name, desc, coast, fill, have in user_fonds %}
-        {% if have %}
-        <p class="coast__title">{{ name }}</p>
+        {% for fond in fonds %}
+        <p class="coast__title">{{ fond.name }}</p>
         <div class="coast neutral">
-            <p class="coast__text">{{ coast }} ₽ <span class="fonds">{{ fill }}%</span></p>
+            <p class="coast__text">{{ fond.required_amount }} ₽ <span class="fonds">{{ fond.collected_amount / fond.required_amount * 100}}%</span></p>
         </div>
-        {% endif %}
         {% endfor %}
     </div>
 
@@ -51,19 +32,19 @@
                 <th>Имя</th>
                 <th>Сумма</th>
             </tr>
-            {% for nick, coast, id in leaderboard %}
+            {% for user in users %}
             {% if (loop.index <= 10) %}
             <tr class="leaderboard__body">
                 <th>{{ loop.index }}<img src="/static/img/ribbon.svg" alt="награда"></th>
-                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
-                <th>{{ coast }} ₽</th>
+                <th><a class="leaderboard__href" href="/user/profile/{{user.id}}">{{ user.name }}</a></th>
+                <th>{{ user.balance }} ₽</th>
             </tr>
             {% elif id == user_id %}
             <!-- место работника в рейтинге -->
             <tr class="leaderboard__body self">
                 <th>{{ loop.index }}</th>
-                <th><a class="leaderboard__href" href="/user/{{id}}">{{ nick }}</a></th>
-                <th>{{ coast }} ₽</th>
+                <th><a class="leaderboard__href" href="/user/profile/{{user.id}}">{{ user.name }}</a></th>
+                <th>{{ user.balance }} ₽</th>
             </tr>
             {% endif %}
             {% endfor %}

@@ -15,7 +15,10 @@ from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
     FormFondDelete, FormFondAdd, FormFondRemove
+from data.target import Target
 from data.user import User
+
+mail = None
 
 application = Flask(__name__)
 db_session.global_init("db/kokos.sqlite")
@@ -39,14 +42,13 @@ def create_new_image_name():
 
 @login_manager.user_loader
 def load_user(user_id):
+    print(user_id)
     session = db_session.create_session()
-    user = session.query(User).get(user_id)
+    user = session.query(Admin).filter(Admin.email == user_id).first()
     if not user:
-        user = session.query(Company).get(user_id)
+        user = session.query(User).filter(User.email == user_id).first()
         if not user:
-            user = session.query(Admin).get(user_id)
-            if not user:
-                logout_user()
+            user = session.query(Company).filter(Company.email == user_id).first()
     session.close()
     return user
 
@@ -70,6 +72,7 @@ def main_page():
 
 @application.route("/login/", methods=["GET", "POST"])
 def login_page():
+    global mail
     if not current_user.is_anonymous:
         return redirect("/")
     form = FormLogin()
@@ -80,9 +83,12 @@ def login_page():
             person = session.query(Company).filter(Company.email == form.email.data).first()
             if not person:
                 person = session.query(Admin).filter(Admin.email == form.email.data).first()
+        if person:
+            person.id = person.email
         session.close()
         if person and person.check_password(form.password.data):
-            login_user(person, remember=True)
+            mail = form.email.data
+            login_user(person, remember=False)
             return redirect("/")  # если успех
         return redirect("/")  # если неуспех
     return my_render("login.html", title="Авторизация", need_log=False, form=form)
@@ -114,59 +120,22 @@ def user_registration_page(code):  # /user/registration/5zbFscdWU7NUUSFBjzA9UlFn
 @application.route("/user/activity/<string:email>")
 def user_activity(email):
     data = get_activity_statistics(email)
-    print(data, email)
+    print(email)
     return jsonpickle.encode(data)
 
 
 @application.route("/user/profile/<int:id>/")
 def user_profil_page(id):
-    coast = 63_152.62  # in rub
-    delta = 6.9  # %
-    chart_types = ["анжумания", "анжумания", "анжумания", ]
-    charts = [
-        {
-            "title": "анжумания",
-            "subtitle": "за 1 раз 1000 rub",
-            "avg_company": 10,
-            "avg_user": 8,
-            "data": [8,9,9,7,8,7,9]
-        }, {
-            "title": "анжумания",
-            "subtitle": "за 1 раз 1000 rub",
-            "avg_company": 10,
-            "avg_user": 8,
-            "data": [8,9,9,7,8,7,9]
-        }, {
-            "title": "анжумания",
-            "subtitle": "за 1 раз 1000 rub",
-            "avg_company": 10,
-            "avg_user": 8,
-            "data": [8,9,9,7,8,7,9]
-        }   
-    ]
-    leaderboard = [
-        ["Rjkzavr", 56262.36, 1],
-        ["Nikniksham", 56262.36, 2],
-        ["Niki", 56262.36, 3],
-        ["Juk", 56262.36, 4],
-        ["Rjkz", 56262.36, 5],
-        ["NikTV_78", 56262.36, 6],
-        ["bobr", 56262.36, 7],
-        ["kaiga", 56262.36, 8],
-        ["dragon", 56262.36, 9],
-        ["itv", 56262.36, 10],
-        ["Cha Cha", 56262.36, 11],
-        ["turtle", 56262.36, 12],
-    ]
-    user_fonds = [
-        [1, "Фонд №1", "Длинное описание фонда №1, очень длинное описание фонда, очеееень длинное", 56262.36, 42.54, True],
-        [2, "Фонд №2", "Длинное описание фонда №2, очень длинное описание фонда, очеееень длинное", 94262.36, 78.12,  True],
-        [3, "Фонд №3", "Длинное описание фонда №3, очень длинное описание фонда, очеееень длинное", 62262.36, 54.53,  False],
-
-    ]
-    return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=coast,
-                     increment=delta, leaderboard=leaderboard, chart_types=chart_types,
-                     user_email=("" if current_user.is_anonymous else current_user.email), user_fonds=user_fonds)
+    sessia = db_session.create_session()
+    fonds = sessia.query(Target).filter(Target.company_id == current_user.company_id).all()
+    users = sessia.query(User).filter(User.company_id == current_user.company_id).order_by(-User.balance).all()
+    user = sessia.query(User).get(id)
+    if not user:
+        return redirect("/")
+    print(fonds)
+    sessia.close()
+    return my_render("user-profile.html", is_authorized=True, is_logout=True, coast=user.balance, users=users,
+                     user_email=user.email, fonds=fonds, user=user)
 
 
 @application.route("/user/work/")
@@ -177,8 +146,6 @@ def user_work():
     for act in acts:
         types.add(act.type)
     types = list(types)
-    print(types)
-    print(acts)
     return my_render("user-work.html", types=types, acts=acts)
 
 

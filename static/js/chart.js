@@ -11,6 +11,10 @@ const load_chart = () => {
 
 const create_chart = (data) => {
     console.log(data)
+    let summ = 0
+    for (let j=0; j< 7; ++j) {
+        summ += data.data[j]
+    }
     const chrs = document.getElementById('charts');
     let div1 = document.createElement("div")
     div1.classList.add("chart")
@@ -73,7 +77,7 @@ const create_chart = (data) => {
                 },
                 subtitle: {
                     display: true,
-                    text: data.subtitle,
+                    text: `Всего ${summ}`,
                     font: {
                         size: 16,
                     },
