@@ -93,11 +93,10 @@ def delete_company(admin_email, company_id):
     return {"success": f"Компания {name} удалена"}
 
 
-def create_company(admin_email, args):
-    admin, session = check_params(admin_email, args, ["name", 'email', 'rates', 'logo', 'password'])
-
-    if type(admin) is dict:
-        return admin
+def create_company(args):
+    session = db_session.create_session()
+    if not all(key in args and args[key] is not None for key in ["name", 'email', 'rates', 'logo', 'password']):
+        return raise_error(f"Отсутствуют важные параметры: {['name', 'email', 'rates', 'logo', 'password']}", session)
 
     new_company = Company()
     new_company.name = args["name"]
@@ -107,7 +106,7 @@ def create_company(admin_email, args):
                              for i in range(64)])
         if not session.query(Company).filter(Company.unique_id == unique_id).first():
             break
-    new_company.unique_id = args['unique_id']
+    new_company.unique_id = unique_id
     new_company.rates = args['rates']
     new_company.logo = args['logo']
     new_company.set_password(args['password'])
