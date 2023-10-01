@@ -9,7 +9,7 @@ from data import db_session
 from data.InnerAPI.InnerCompany import create_company
 from data.InnerAPI.InnerStatistics import put_statistics
 from data.InnerAPI.InnerTarget import create_target, delete_target
-from data.InnerAPI.InnerUser import create_user, make_contribution
+from data.InnerAPI.InnerUser import create_user, make_contribution, delete_user
 from data.InnerAPI.InnerUser import get_activity_statistics
 from data.activity import Activity
 from data.admin import Admin
@@ -190,21 +190,6 @@ def fond_spend_page(id):
     return my_render("fond-spend.html", form=form, name=fond.name, message=err, result=False)
 
 
-@application.route("/fond/add/<int:id>")
-def fond_add(id):
-    # TODO:
-    form = FormFondAdd()
-    name = f"Фонд №{id}"
-    return my_render("fond-add.html", name=name, form=form)
-
-
-@application.route("/fond/remove/<int:id>")
-def fond_remove(id):
-    form = FormFondRemove()
-    name = f"Фонд №{id}"
-    return my_render("fond-remove.html", name=name, form=form)
-
-
 @application.route("/company/registration", methods=["GET", "POST"])
 def company_registration_page():
     form = FormCompanyRegistration()
@@ -243,7 +228,6 @@ def company_page(id):
 
 
 @application.route("/company/profile/<int:id>/")
-# TELEPORT
 def company_profile_page(id):
     sessia = db_session.create_session()
     fonds = sessia.query(Target).filter(Target.company_id == id).all()
@@ -260,10 +244,19 @@ def company_edit():
     return redirect("/company/profile/123")
 
 
-@application.route("/delte/user/<int:id>", methods=["POST", "GET"])
-def delete_user():
-    # необязательно
-    return redirect("/company/profile/123")
+@application.route("/delete/user/<int:id>", methods=["POST", "GET"])
+def delete_user_page(id):
+    form = FormFondDelete()
+    message = ""
+    if request.method == 'POST':
+        message = delete_user(current_user.email, id)
+        if "success" in message:
+            return redirect("/")
+        message = list(message.values())[-1]
+    sessia = db_session.create_session()
+    user = sessia.query(User).get(id)
+    sessia.close()
+    return my_render("user-delete.html", title="Удалить пользователя", form=form, message=message, name=user.name)
 
 
 @application.route("/fond/create/", methods=["POST", "GET"])
@@ -294,7 +287,10 @@ def company_delete_fond(id):
         if "success" in message:
             return redirect("/login")
         message = list(message.values())[-1]
-    return my_render("fond-delete.html", title="Создать фонд", form=form, message=message)
+    sessia = db_session.create_session()
+    target = sessia.query(Target).get(id)
+    sessia.close()
+    return my_render("fond-delete.html", title="Создать фонд", form=form, message=message, name=target.name)
 
 
 if __name__ == '__main__':
