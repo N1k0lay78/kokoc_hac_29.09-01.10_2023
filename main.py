@@ -1,4 +1,7 @@
-import jsonpickle as jsonpickle
+import os
+import random
+
+import jsonpickle
 from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, logout_user, login_required, login_user, current_user
 import config
@@ -7,6 +10,7 @@ from data.InnerAPI.InnerCompany import create_company
 from data.InnerAPI.InnerTarget import create_target, delete_target
 from data.InnerAPI.InnerUser import create_user
 from data.InnerAPI.InnerUser import get_activity_statistics
+from data.activity import Activity
 from data.admin import Admin
 from data.company import Company
 from data.forms import FormLogin, FormUserRegistration, FormCompanyRegistration, FormFondEdit, FormFondCreate, \
@@ -18,6 +22,19 @@ db_session.global_init("db/kokos.sqlite")
 application.config.from_object(config)
 login_manager = LoginManager()
 login_manager.init_app(application)
+
+
+def create_random_name(name_len):
+    let = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+    return ''.join([random.choice(let) for i in range(name_len)])
+
+
+def create_new_image_name():
+    filelist, format = os.listdir(application.config['UPLOAD_FOLDER']), ".png"
+    filename = create_random_name(50) + format
+    while filename in filelist:
+        filename = create_random_name(50) + format
+    return filename
 
 
 @login_manager.user_loader
@@ -97,6 +114,7 @@ def user_registration_page(code):  # /user/registration/5zbFscdWU7NUUSFBjzA9UlFn
 @application.route("/user/activity/<string:email>")
 def user_activity(email):
     data = get_activity_statistics(email)
+    print(data, email)
     return jsonpickle.encode(data)
 
 
@@ -151,8 +169,23 @@ def user_profil_page(id):
                      user_email=("" if current_user.is_anonymous else current_user.email), user_fonds=user_fonds)
 
 
+@application.route("/user/work/")
+def user_work():
+    session = db_session.create_session()
+    acts = session.query(Activity).all()
+    types = set()
+    for act in acts:
+        types.add(act.type)
+    types = list(types)
+    print(types)
+    print(acts)
+    return my_render("user-work.html", types=types, acts=acts)
+
+
+
 @application.route("/user/fonds/")
 def user_fonds():
+    # TODO:
     user_fonds = [
         [1, "Фонд №1", "Длинное описание фонда №1, очень длинное описание фонда, очеееень длинное", 56262.36, 42.54, True],
         [2, "Фонд №2", "Длинное описание фонда №2, очень длинное описание фонда, очеееень длинное", 94262.36, 78.12,  True],
@@ -163,6 +196,7 @@ def user_fonds():
 
 @application.route("/fond/add/<int:id>")
 def fond_add(id):
+    # TODO:
     form = FormFondAdd()
     name = f"Фонд №{id}"
     return my_render("fond-add.html", name=name, form=form)

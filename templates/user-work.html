@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="/static/css/ui_kit.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <select class="type-work" onselect="onSelect">
+        {% for type in types %}
+        <option>{{ type }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/find-work.js"></script>
+{% endblock %}
